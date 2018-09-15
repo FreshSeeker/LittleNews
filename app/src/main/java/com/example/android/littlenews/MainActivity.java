@@ -19,20 +19,25 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    AFragment aFragment;
+    BFragment bFragment;
 
     public static int navigationItemNumber = 0;
 
-    SectionsPagerAdapter newsSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), MainActivity.this);
-    GankSectionsPagerAdapter gankSectionsPagerAdapter = new GankSectionsPagerAdapter(getSupportFragmentManager(),MainActivity.this);
-    TabLayout tabLayout;
-    ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //创建SQLite数据表
         MyDataBaseHelper dbHelper = new MyDataBaseHelper(this, "TableStore.db", null, 1);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        //实例化AFragment
+        aFragment = new AFragment();
+        //把Fragment添加到Activity中
+        getSupportFragmentManager().beginTransaction().add(R.id.fgrt_container_fl, aFragment).commitAllowingStateLoss();
 
         initView();
 
@@ -65,28 +70,11 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //TabLayout+ViewPager
-        viewPager = findViewById(R.id.view_pager);
-        tabLayout = findViewById(R.id.tab_layout);
-        viewPager.setAdapter(newsSectionsPagerAdapter);
-        viewPager.setOffscreenPageLimit(3);
-        tabLayout.setTabTextColors(Color.BLACK, getResources().getColor(R.color.tab_selected));//设置文字默认背景色和选中的背景色
-        tabLayout.setupWithViewPager(viewPager);
-    }
-
-    void setAdapter(){
-        if (navigationItemNumber ==0){
-            viewPager.setAdapter(newsSectionsPagerAdapter);
-            newsSectionsPagerAdapter.notifyDataSetChanged();
-        }else if (navigationItemNumber ==1){
-            viewPager.setAdapter(gankSectionsPagerAdapter);
-            gankSectionsPagerAdapter.notifyDataSetChanged();
-        }
 
     }
-
 
     private long mBackPressedTime;
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -125,7 +113,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -133,17 +120,25 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_news) {
             navigationItemNumber = 0;
+            if (aFragment == null) {
+                aFragment = new AFragment();
+            }
+            getSupportFragmentManager().beginTransaction().replace(R.id.fgrt_container_fl, aFragment).commitAllowingStateLoss();
+
         } else if (id == R.id.nav_gank) {
             navigationItemNumber = 1;
+            if (bFragment == null) {
+                bFragment = new BFragment();
+            }
+            getSupportFragmentManager().beginTransaction().replace(R.id.fgrt_container_fl, bFragment).commitAllowingStateLoss();
+
         } else if (id == R.id.nav_image_video) {
             navigationItemNumber = 2;
-        }  else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_share) {
             navigationItemNumber = 3;
         } else if (id == R.id.nav_send) {
             navigationItemNumber = 4;
         }
-
-        setAdapter();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -48,11 +48,16 @@ public class InitData {
                         @Override
                         public void onNext(NewsBean newsBean) {
                             if (newsBean != null) {
-                                //创建SQLite数据表格,并保存数据
+                                //创建SQLite数据表格
                                 MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
                                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                                 ContentValues values = new ContentValues();
-
+                                //先清空表中数据，
+                                db.delete(SQLTableString.newsTableName[sectionNumber],null,null);
+                                //让id重新从1开始
+                                String string = "update sqlite_sequence set seq=0 where name='" + SQLTableString.newsTableName[sectionNumber] + "'";
+                                db.execSQL(string);
+                                //再存进新的数据
                                 for (int i = 0; i < newsBean.getNewslist().size(); i++) {
                                     values.put("ctime", newsBean.getNewslist().get(i).getCtime());
                                     values.put("title", newsBean.getNewslist().get(i).getTitle());
@@ -60,11 +65,8 @@ public class InitData {
                                     values.put("picUrl", newsBean.getNewslist().get(i).getPicUrl());
                                     values.put("url", newsBean.getNewslist().get(i).getUrl());
                                     db.insert(SQLTableString.newsTableName[sectionNumber], null, values);
-//                                    db.replace(SQLTableString.newsTableName[sectionNumber],null,values);
                                     values.clear();
-
                                 }
-
                                 Log.i("---initData0---", "onNext: ");
                             }
                         }
@@ -84,7 +86,7 @@ public class InitData {
                         }
                     });
 
-        } else if (navigationItemNumber == 1) {//新闻API的网络请求，得到 GankBean 对象
+        } else if (navigationItemNumber == 1) {//干货集中营的网络请求，得到 GankBean 对象
             Observable<GankBean> observable = request_interface.getGank(
                     APIConfig.getPathUrl(sectionNumber));
 

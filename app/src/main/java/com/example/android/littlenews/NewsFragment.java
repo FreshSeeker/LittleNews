@@ -45,8 +45,6 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         swipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh);
         recyclerView = rootView.findViewById(R.id.recycler_view);
 
-
-
         initRecyclerView();
 
         return rootView;
@@ -86,6 +84,7 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
             @Override
             public void onRefresh() {
                 new NetAndDataTask(getActivity(),navigationItemNumber,sectionNumber,newsAdapter).execute();
+                newsAdapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });

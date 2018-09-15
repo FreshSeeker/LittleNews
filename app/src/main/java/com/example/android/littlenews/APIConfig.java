@@ -6,7 +6,7 @@ public class APIConfig {
 
     private static final String key = "/?key=210518c5d394dd7a986577cd5bacedda";
 
-    private static final String num = "&num=10";
+    private static final String num = "&num=20";
 
     private static String getNewsUrl(int sectionNumber){
         return ChannelConfig.getEnChannel(sectionNumber) + key + num;

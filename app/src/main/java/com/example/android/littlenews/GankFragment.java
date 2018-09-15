@@ -53,7 +53,6 @@ public class GankFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
-        gankAdapter.notifyDataSetChanged();
     }
 
     public void initRecyclerView(){

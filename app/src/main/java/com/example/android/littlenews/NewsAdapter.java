@@ -21,7 +21,6 @@ import java.util.List;
 public class NewsAdapter extends RecyclerView.Adapter {
     private Context context;
     private LayoutInflater inflater;
-    private NewsBean newsBean;
     private MyItemClickListener myItemClickListener;
     private RequestOptions options;
     private int sectionNumber;
@@ -33,7 +32,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
         this.sectionNumber = sectionNumber;
         this.inflater = LayoutInflater.from(context);
         options = new RequestOptions().placeholder(R.drawable.ic_loading).error(R.drawable.ic_null);
-        dbHelper = new MyDataBaseHelper(context, "TableStore", null, 1);
+        dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
         db = dbHelper.getWritableDatabase();
 
     }
@@ -49,15 +48,13 @@ public class NewsAdapter extends RecyclerView.Adapter {
 
         ViewHolder viewHolder = (ViewHolder) holder;
 
-        //查询出数据
+        //查询出第(position+1)行数据
         Cursor cursor = db.query(SQLTableString.newsTableName[sectionNumber],
                 null, "id = ?", new String[]{String.valueOf(position + 1)},
                 null, null, null, null);
 
         Log.i("NewsAdapter", "onBindViewHolder: --cursor.moveToFirst()="+ cursor.moveToFirst());
         if (cursor.moveToFirst()){
-            Log.i("NewsAdapter", "onBindViewHolder: --"+ cursor.getString(cursor.getColumnIndex("picUrl")));
-
             Glide.with(context)//使用Glide显示图片
                     .load(cursor.getString(cursor.getColumnIndex("picUrl")))
                     .apply(options)
@@ -78,7 +75,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 10;
+        return 20;
     }
 
     //绑定MainActivity传进来的点击监听器
