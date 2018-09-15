@@ -1,6 +1,8 @@
 package com.example.android.littlenews;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,16 +22,20 @@ public class NewsAdapter extends RecyclerView.Adapter {
     private Context context;
     private LayoutInflater inflater;
     private NewsBean newsBean;
-    private List<NewsBean.NewslistBean> itemList;
     private MyItemClickListener myItemClickListener;
     private RequestOptions options;
     private int sectionNumber;
+    private MyDataBaseHelper dbHelper;
+    private SQLiteDatabase db;
 
     NewsAdapter(Context context, int sectionNumber) {
         this.context = context;
         this.sectionNumber = sectionNumber;
         this.inflater = LayoutInflater.from(context);
         options = new RequestOptions().placeholder(R.drawable.ic_loading).error(R.drawable.ic_null);
+        dbHelper = new MyDataBaseHelper(context, "TableStore", null, 1);
+        db = dbHelper.getWritableDatabase();
+
     }
 
     @NonNull
@@ -43,34 +49,29 @@ public class NewsAdapter extends RecyclerView.Adapter {
 
         ViewHolder viewHolder = (ViewHolder) holder;
 
-        Log.i("---NewsAdapter---", "onBindViewHolder: position = " + position);
+        //查询出数据
+        Cursor cursor = db.query(SQLTableString.newsTableName[sectionNumber],
+                null, "id = ?", new String[]{String.valueOf(position + 1)},
+                null, null, null, null);
 
-        if (position == 0) {
-            try {
-                newsBean = DataMap.newsInstance().get(String.valueOf(sectionNumber));
-            } catch (Exception e) {
-                Log.d("---NewsAdapter---", "onBindViewHolder: newsBean = " + null);
-            } finally {
-                if (newsBean != null) {
-                    itemList = newsBean.getNewslist();
-                }
-            }
+        Log.i("NewsAdapter", "onBindViewHolder: --cursor.moveToFirst()="+ cursor.moveToFirst());
+        if (cursor.moveToFirst()){
+            Log.i("NewsAdapter", "onBindViewHolder: --"+ cursor.getString(cursor.getColumnIndex("picUrl")));
 
-        }
-
-        if (newsBean != null) {
-            Glide.with(context)
-                    .load(itemList.get(position).getPicUrl())
+            Glide.with(context)//使用Glide显示图片
+                    .load(cursor.getString(cursor.getColumnIndex("picUrl")))
                     .apply(options)
                     .into(viewHolder.imageView);
-            viewHolder.title.setText(itemList.get(position).getTitle());
-            viewHolder.newsSource.setText(itemList.get(position).getDescription());
+            viewHolder.title.setText(cursor.getString(cursor.getColumnIndex("title")));
+            viewHolder.newsSource.setText(cursor.getString(cursor.getColumnIndex("description")));
         }
+        cursor.close();
 
+        //为ItemView设置点击事件
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myItemClickListener.onItemClick(position);
+                myItemClickListener.onItemClick(position);//调用NewsFragment中的onItemClick()方法。
             }
         });
     }

@@ -31,21 +31,21 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Log.i("SectionsPagerAdapter", "getItem: 获得了NewsFragment"+position);
+//        Log.i("SectionsPagerAdapter", "getItem: 获得了NewsFragment"+position);
 
         return NewsFragment.newInstance(position+1);
     }
 
     @Override
     public int getCount() {
-        Log.i("SectionsPagerAdapter", "getCount_0: "+fragmentManager.getFragments());
+//        Log.i("SectionsPagerAdapter", "getCount_0: ");
         return ChannelConfig.channels.length;
     }
 
     @Nullable
     @Override
     public CharSequence getPageTitle(int position) {
-        Log.d("SectionsPagerAdapter", "getPageTitle: ");
+//        Log.d("SectionsPagerAdapter", "getPageTitle: ");
         return ChannelConfig.channels[position];
     }
 }

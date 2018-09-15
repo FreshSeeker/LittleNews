@@ -1,5 +1,6 @@
 package com.example.android.littlenews;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -29,6 +30,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MyDataBaseHelper dbHelper = new MyDataBaseHelper(this, "TableStore.db", null, 1);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         initView();
 

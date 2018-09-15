@@ -1,17 +1,14 @@
 package com.example.android.littlenews;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.android.littlenews.bean.GankBean;
 import com.example.android.littlenews.bean.NewsBean;
-import com.google.gson.reflect.TypeToken;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-
-import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -27,19 +24,17 @@ public class InitData {
     @SuppressLint("CheckResult")
     public static void initData(final Context context, int navigationItemNumber, final int sectionNumber) {
 
+        //RxJava2 + Retrofit2 作网络请求
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(APIConfig.getBaseUrl())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-
         GetRequest_Interface request_interface = retrofit.create(GetRequest_Interface.class);
 
-        if (navigationItemNumber ==0){
-
+        if (navigationItemNumber == 0) {//新闻API的网络请求，得到 NewsBean对象
             Observable<NewsBean> observable = request_interface.getNews(
-                    APIConfig.getPathUrl(sectionNumber
-                    ));
+                    APIConfig.getPathUrl(sectionNumber));
 
             observable.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -53,8 +48,24 @@ public class InitData {
                         @Override
                         public void onNext(NewsBean newsBean) {
                             if (newsBean != null) {
-                                DataMap.newsInstance().put(String.valueOf(sectionNumber), newsBean);
-                                Log.i("---initData0---", "onNext: newsInstance");
+                                //创建SQLite数据表格,并保存数据
+                                MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
+                                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                                ContentValues values = new ContentValues();
+
+                                for (int i = 0; i < newsBean.getNewslist().size(); i++) {
+                                    values.put("ctime", newsBean.getNewslist().get(i).getCtime());
+                                    values.put("title", newsBean.getNewslist().get(i).getTitle());
+                                    values.put("description", newsBean.getNewslist().get(i).getDescription());
+                                    values.put("picUrl", newsBean.getNewslist().get(i).getPicUrl());
+                                    values.put("url", newsBean.getNewslist().get(i).getUrl());
+                                    db.insert(SQLTableString.newsTableName[sectionNumber], null, values);
+//                                    db.replace(SQLTableString.newsTableName[sectionNumber],null,values);
+                                    values.clear();
+
+                                }
+
+                                Log.i("---initData0---", "onNext: ");
                             }
                         }
 
@@ -73,7 +84,7 @@ public class InitData {
                         }
                     });
 
-        }else if (navigationItemNumber == 1){
+        } else if (navigationItemNumber == 1) {//新闻API的网络请求，得到 GankBean 对象
             Observable<GankBean> observable = request_interface.getGank(
                     APIConfig.getPathUrl(sectionNumber));
 
@@ -82,7 +93,7 @@ public class InitData {
                     .subscribe(new Observer<GankBean>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-                            Log.i("---initData1---", "onSubscribe: navigationItemNumber "+MainActivity.navigationItemNumber);
+                            Log.i("---initData1---", "onSubscribe: navigationItemNumber " + MainActivity.navigationItemNumber);
                         }
 
                         @Override

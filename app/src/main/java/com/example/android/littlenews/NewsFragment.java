@@ -45,6 +45,8 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         swipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh);
         recyclerView = rootView.findViewById(R.id.recycler_view);
 
+
+
         initRecyclerView();
 
         return rootView;
@@ -53,8 +55,7 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        InitData.initData(getActivity(),navigationItemNumber,sectionNumber);
-        newsAdapter.notifyDataSetChanged();
+        new NetAndDataTask(getActivity(),navigationItemNumber,sectionNumber,newsAdapter).execute();
     }
 
     public void initRecyclerView() {
@@ -84,8 +85,7 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
-                newsAdapter.notifyDataSetChanged();
+                new NetAndDataTask(getActivity(),navigationItemNumber,sectionNumber,newsAdapter).execute();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -101,6 +101,7 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
     }
 
 
+    //跳转到WebView活动，打开对应的网页
     @Override
     public void onItemClick(int postion) {
         String url = DataMap.newsInstance().get(String.valueOf(sectionNumber)).getNewslist().get(postion).getUrl();

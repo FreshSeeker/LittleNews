@@ -16,4 +16,7 @@ public interface GetRequest_Interface {
 
     @GET
     Observable<GankBean> getGank(@Url String url);
+
+    @GET
+    Observable<Object> getObject(@Url String url);
 }

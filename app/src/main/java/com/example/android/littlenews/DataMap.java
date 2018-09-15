@@ -26,7 +26,4 @@ class DataMap {
     }
 
 
-    private static DataMap newsInstance = null;
-
-
 }
