@@ -3,6 +3,7 @@ package com.example.android.littlenews;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 public class NetAndDataTask extends AsyncTask<Void, Integer, Boolean> {
@@ -11,13 +12,11 @@ public class NetAndDataTask extends AsyncTask<Void, Integer, Boolean> {
     private Context mContext;
     private int navigationItemNumber;
     private int sectionNumber;
-    NewsAdapter newsAdapter;
 
-    public NetAndDataTask(Context context,int navNumber,int secNumber,NewsAdapter adapter) {
+    NetAndDataTask(Context context, int navNumber, int secNumber) {
         this.mContext = context;
         this.navigationItemNumber = navNumber;
         this.sectionNumber = secNumber;
-        this.newsAdapter = adapter;
     }
 
     @Override
@@ -40,7 +39,7 @@ public class NetAndDataTask extends AsyncTask<Void, Integer, Boolean> {
 
     @Override
     protected void onProgressUpdate(Integer... values) {
-        newsAdapter.notifyDataSetChanged();
+        super.onProgressUpdate(values);
     }
 
     @Override

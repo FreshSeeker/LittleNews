@@ -53,7 +53,7 @@ public class InitData {
                                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                                 ContentValues values = new ContentValues();
                                 //先清空表中数据，
-                                db.delete(SQLTableString.newsTableName[sectionNumber],null,null);
+                                db.delete(SQLTableString.newsTableName[sectionNumber], null, null);
                                 //让id重新从1开始
                                 String string = "update sqlite_sequence set seq=0 where name='" + SQLTableString.newsTableName[sectionNumber] + "'";
                                 db.execSQL(string);
@@ -95,16 +95,38 @@ public class InitData {
                     .subscribe(new Observer<GankBean>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-                            Log.i("---initData1---", "onSubscribe: navigationItemNumber " + MainActivity.navigationItemNumber);
+                            Log.i("---initData1---", "onSubscribe: ");
                         }
 
                         @Override
                         public void onNext(GankBean gankBean) {
 
                             if (gankBean != null) {
-                                Log.i("---initData1---", "onNext: ");
-                                //将得到的newsBean对象保存
-                                DataMap.gankInstance().put(String.valueOf(sectionNumber), gankBean);
+                                //创建SQLite数据表格
+                                MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
+                                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                                ContentValues values = new ContentValues();
+                                //先清空表中数据，
+                                db.delete(SQLTableString.gankTableName[sectionNumber], null, null);
+                                //让id重新从1开始
+                                String string = "update sqlite_sequence set seq=0 where name='" + SQLTableString.gankTableName[sectionNumber] + "'";
+                                db.execSQL(string);
+                                //再存进新的数据
+                                for (int i = 0; i < gankBean.getResults().size(); i++) {
+                                    values.put("_id", gankBean.getResults().get(i).get_id());
+                                    values.put("createdAt", gankBean.getResults().get(i).getCreatedAt());
+                                    values.put("desc", gankBean.getResults().get(i).getDesc());
+                                    values.put("publishedAt", gankBean.getResults().get(i).getPublishedAt());
+                                    values.put("source", gankBean.getResults().get(i).getSource());
+                                    values.put("type", gankBean.getResults().get(i).getType());
+                                    values.put("url", gankBean.getResults().get(i).getUrl());
+                                    values.put("who", gankBean.getResults().get(i).getWho());
+                                    if(gankBean.getResults().get(i).getImages() != null){
+                                        values.put("image", gankBean.getResults().get(i).getImages().get(0));//只保存第一张图片
+                                    }
+                                    db.insert(SQLTableString.gankTableName[sectionNumber], null, values);
+                                    values.clear();
+                                }
                             }
 
                         }

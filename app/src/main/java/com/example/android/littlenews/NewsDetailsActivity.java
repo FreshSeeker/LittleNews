@@ -3,11 +3,13 @@ package com.example.android.littlenews;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.http.SslError;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -25,7 +27,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
         webView = findViewById(R.id.web_details);
 
         Intent intent = getIntent();
-        String url = intent.getStringExtra("newsBaseUrl");
+        String url = intent.getStringExtra("baseUrl");
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new MyWebViewClient());
         webView.setWebChromeClient(new MyWebChromeClient());
@@ -51,12 +53,19 @@ public class NewsDetailsActivity extends AppCompatActivity {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
         }
+
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            super.onReceivedSslError(view, handler, error);
+            handler.proceed();
+        }
     }
 
     class MyWebChromeClient extends WebChromeClient{
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
+
         }
 
         @Override
@@ -65,6 +74,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
             setTitle(title);
         }
     }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -76,5 +86,7 @@ public class NewsDetailsActivity extends AppCompatActivity {
 //        }
         return super.onKeyDown(keyCode, event);
     }
+
+
 
 }

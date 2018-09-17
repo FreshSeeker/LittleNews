@@ -37,7 +37,7 @@ public class ChannelConfig {
     //干货频道
     public static String[] ganks = {
             "Android",
-            "iOS ",
+            "iOS",
             "拓展资源",
             "前端",
             "all",

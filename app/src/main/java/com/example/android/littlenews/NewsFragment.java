@@ -53,7 +53,7 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        new NetAndDataTask(getActivity(),navigationItemNumber,sectionNumber,newsAdapter).execute();
+        new NetAndDataTask(getActivity(),navigationItemNumber,sectionNumber).execute();
     }
 
     public void initRecyclerView() {
@@ -83,7 +83,7 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new NetAndDataTask(getActivity(),navigationItemNumber,sectionNumber,newsAdapter).execute();
+                new NetAndDataTask(getActivity(),navigationItemNumber,sectionNumber).execute();
                 newsAdapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -102,38 +102,10 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
 
     //跳转到WebView活动，打开对应的网页
     @Override
-    public void onItemClick(int postion) {
-        String url = DataMap.newsInstance().get(String.valueOf(sectionNumber)).getNewslist().get(postion).getUrl();
+    public void onItemClick(String url) {
         Intent intent = new Intent(getActivity(), NewsDetailsActivity.class);
-        intent.putExtra("newsBaseUrl", url);
+        intent.putExtra("baseUrl", url);
         startActivity(intent);
 
     }
-
-
-//    class DataTask extends AsyncTask<Void,Integer,Boolean>{
-//
-//        @Override
-//        protected void onPreExecute() {
-//
-//        }
-//
-//        @Override
-//        protected Boolean doInBackground(Void... voids) {
-//            InitData.initData(getActivity(),navigationItemNumber,sectionNumber);
-//            return true;
-//        }
-//
-//        @Override
-//        protected void onProgressUpdate(Integer... values) {
-//            newsAdapter.notifyDataSetChanged();
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Boolean aBoolean) {
-//
-//
-//        }
-//    }
-
 }

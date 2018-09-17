@@ -7,15 +7,15 @@
         <item
             android:id="@+id/nav_news"
             android:icon="@drawable/ic_menu_camera"
-            android:title="凤凰新闻" />
+            android:title="看点新闻" />
         <item
             android:id="@+id/nav_gank"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="干货集中营" />
+            android:title="来点干货" />
         <item
             android:id="@+id/nav_image_video"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="休息频道" />
+            android:title="休息一下" />
 
     </group>
 

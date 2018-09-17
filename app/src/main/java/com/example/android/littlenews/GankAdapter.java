@@ -1,6 +1,8 @@
 package com.example.android.littlenews;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,16 +21,19 @@ import java.util.List;
 public class GankAdapter extends RecyclerView.Adapter {
     private Context context;
     private LayoutInflater inflater;
-    private GankBean gankBean;
-    private List<GankBean.ResultsBean> itemList;
+    private MyItemClickListener myItemClickListener;
     private RequestOptions options;
     private int sectionNumber;
+    private MyDataBaseHelper dbHelper;
+    private SQLiteDatabase db;
 
     GankAdapter(Context context, int sectionNumber) {
         this.context = context;
         this.sectionNumber = sectionNumber;
         this.inflater = LayoutInflater.from(context);
         options = new RequestOptions().placeholder(R.drawable.ic_loading).error(R.drawable.ic_null);
+        dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
+        db = dbHelper.getWritableDatabase();
     }
 
     @NonNull
@@ -42,45 +47,31 @@ public class GankAdapter extends RecyclerView.Adapter {
 
         ViewHolder viewHolder = (ViewHolder) holder;
 
-        Log.i("---GankAdapter---", "onBindViewHolder: position = " + position);
+        //查询出第(position+1)行数据
+        final Cursor cursor = db.query(SQLTableString.gankTableName[sectionNumber],
+                null, "id = ?", new String[]{String.valueOf(position + 1)},
+                null, null, null, null);
 
-//        if (position == 0) {
-//            try {
-//                gankBean = DataMap.gankInstance().get(String.valueOf(sectionNumber));
-//            } catch (Exception e) {
-//                Log.e("---GankAdapter---", "onBindViewHolder: gankBean = " + null);
-//            } finally {
-//                if (gankBean != null) {
-//                    itemList = gankBean.getResults();
-//                }else {
-//                    Log.i("---GankAdapter---", "onBindViewHolder: gankBean == null");
-//                }
-//            }
-//        }
-//
-//        if (itemList != null) {
-//            if (itemList.get(position).getImages() != null){
-//                switch (itemList.get(position).getImages().size()){
-//                    case 0:
-//                        break;
-//                    case 1:
-//                        showPictures(position,0, viewHolder.imageView0);
-//                        break;
-//                    case 2:
-//                        showPictures(position,0, viewHolder.imageView0);
-//                        showPictures(position,1, viewHolder.imageView1);
-//                        break;
-//                    case 3:
-//                        showPictures(position,0, viewHolder.imageView0);
-//                        showPictures(position,1, viewHolder.imageView1);
-//                        showPictures(position,2, viewHolder.imageView2);
-//                        break;
-//                }
-//            }
-//            viewHolder.desc.setText(itemList.get(position).getDesc());
-//        }else {
-//            Log.i("---GankAdapter---", "onBindViewHolder: gankBean == null");
-//        }
+        Log.i("GankAdapter", "onBindViewHolder: --cursor.moveToFirst()=" + cursor.moveToFirst());
+        if (cursor.moveToFirst()) {
+            Glide.with(context)//使用Glide显示图片
+                    .load(cursor.getString(cursor.getColumnIndex("image")))
+                    .apply(options)
+                    .into(viewHolder.imageView0);
+            viewHolder.desc.setText(cursor.getString(cursor.getColumnIndex("desc")));
+
+            //为ItemView设置点击事件
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                String url = cursor.getString(cursor.getColumnIndex("url"));
+
+                @Override
+                public void onClick(View v) {
+                    myItemClickListener.onItemClick(url);//调用NewsFragment中的onItemClick()方法。
+                }
+            });
+        }
+        cursor.close();
+
     }
 
     @Override
@@ -88,26 +79,26 @@ public class GankAdapter extends RecyclerView.Adapter {
         return 10;
     }
 
+    //绑定MainActivity传进来的点击监听器
+    public void setOnItemClickListener(MyItemClickListener listener) {
+        this.myItemClickListener = listener;
+    }
+
+
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView desc;
         private ImageView imageView0;
-        private ImageView imageView1;
-        private ImageView imageView2;
+//        private ImageView imageView1;
+//        private ImageView imageView2;
 
         public ViewHolder(View itemView) {
             super(itemView);
             desc = itemView.findViewById(R.id.tv_item_desc);
             imageView0 = itemView.findViewById(R.id.iv_item_imgsrc0);
-            imageView1 = itemView.findViewById(R.id.iv_item_imgsrc1);
-            imageView2 = itemView.findViewById(R.id.iv_item_imgsrc2);
+//            imageView1 = itemView.findViewById(R.id.iv_item_imgsrc1);
+//            imageView2 = itemView.findViewById(R.id.iv_item_imgsrc2);
         }
     }
 
-    private void showPictures(int position,int picPos, ImageView imageView){
-        Glide.with(context)
-                .load(itemList.get(position).getImages().get(picPos))
-                .apply(options)
-                .into(imageView);
-    }
 
 }

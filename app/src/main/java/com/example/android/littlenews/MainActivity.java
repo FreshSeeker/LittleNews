@@ -1,13 +1,10 @@
 package com.example.android.littlenews;
 
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -37,7 +34,7 @@ public class MainActivity extends AppCompatActivity
         //实例化AFragment
         aFragment = new AFragment();
         //把Fragment添加到Activity中
-        getSupportFragmentManager().beginTransaction().add(R.id.fgrt_container_fl, aFragment).commitAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_fl, aFragment).commitAllowingStateLoss();
 
         initView();
 
@@ -123,14 +120,14 @@ public class MainActivity extends AppCompatActivity
             if (aFragment == null) {
                 aFragment = new AFragment();
             }
-            getSupportFragmentManager().beginTransaction().replace(R.id.fgrt_container_fl, aFragment).commitAllowingStateLoss();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_fl, aFragment).commitAllowingStateLoss();
 
         } else if (id == R.id.nav_gank) {
             navigationItemNumber = 1;
             if (bFragment == null) {
                 bFragment = new BFragment();
             }
-            getSupportFragmentManager().beginTransaction().replace(R.id.fgrt_container_fl, bFragment).commitAllowingStateLoss();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_fl, bFragment).commitAllowingStateLoss();
 
         } else if (id == R.id.nav_image_video) {
             navigationItemNumber = 2;
@@ -140,7 +137,7 @@ public class MainActivity extends AppCompatActivity
             navigationItemNumber = 4;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

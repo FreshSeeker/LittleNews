@@ -1,5 +1,6 @@
 package com.example.android.littlenews;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class GankFragment extends Fragment {
+public class GankFragment extends Fragment implements MyItemClickListener{
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private int sectionNumber;
@@ -52,7 +53,7 @@ public class GankFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
+        new NetAndDataTask(getActivity(),navigationItemNumber,sectionNumber).execute();
     }
 
     public void initRecyclerView(){
@@ -63,6 +64,7 @@ public class GankFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         //绑定适配器
         gankAdapter = new GankAdapter(getActivity(),sectionNumber);
+        gankAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(gankAdapter);
         //分割线
         recyclerView.addItemDecoration(new MyDecoration());
@@ -74,7 +76,7 @@ public class GankFragment extends Fragment {
             @Override
             public void onBottom() {
 
-                gankAdapter.notifyDataSetChanged();
+//                gankAdapter.notifyDataSetChanged();
             }
         });
 
@@ -82,12 +84,19 @@ public class GankFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
+                new NetAndDataTask(getActivity(),navigationItemNumber,sectionNumber).execute();
                 gankAdapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
 
+    }
+
+    @Override
+    public void onItemClick(String url) {
+        Intent intent = new Intent(getActivity(), NewsDetailsActivity.class);
+        intent.putExtra("baseUrl", url);
+        startActivity(intent);
     }
 
     class MyDecoration extends RecyclerView.ItemDecoration {

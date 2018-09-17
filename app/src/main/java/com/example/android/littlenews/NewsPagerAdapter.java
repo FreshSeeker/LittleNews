@@ -9,9 +9,9 @@ import android.util.Log;
 
 import java.util.HashMap;
 
-public class SectionsPagerAdapter extends FragmentPagerAdapter {
+public class NewsPagerAdapter extends FragmentPagerAdapter {
 
-    public SectionsPagerAdapter(FragmentManager fm, Context context) {
+    NewsPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

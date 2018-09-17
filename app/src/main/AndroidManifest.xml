@@ -26,9 +26,6 @@
         <activity android:name=".NewsDetailsActivity">
         </activity>
 
-        <activity android:name=".GankActivity"
-            android:launchMode="singleTask">
-        </activity>
     </application>
 
 </manifest>

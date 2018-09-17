@@ -6,12 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MyDataBaseHelper extends SQLiteOpenHelper {
 
-    private Context mContext;
-
     MyDataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
-        mContext = context;
-
     }
 
     @Override
@@ -30,18 +26,9 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQLTableString.CREATE_TUOZHAN);
         db.execSQL(SQLTableString.CREATE_QIANDUAN);
         db.execSQL(SQLTableString.CREATE_ALLGANKS);
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        db.execSQL("drop table if exists Social");
-//        db.execSQL("drop table if exists Guonei");
-//        db.execSQL("drop table if exists World");
-//        db.execSQL("drop table if exists Huabian");
-//        db.execSQL("drop table if exists Tiyu");
-//        db.execSQL("drop table if exists Nba");
-//        db.execSQL("drop table if exists Football");
-//        db.execSQL("drop table if exists Keji");
     }
 }

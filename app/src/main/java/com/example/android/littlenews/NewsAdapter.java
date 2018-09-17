@@ -14,9 +14,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.android.littlenews.bean.NewsBean;
-
-import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter {
     private Context context;
@@ -24,7 +21,6 @@ public class NewsAdapter extends RecyclerView.Adapter {
     private MyItemClickListener myItemClickListener;
     private RequestOptions options;
     private int sectionNumber;
-    private MyDataBaseHelper dbHelper;
     private SQLiteDatabase db;
 
     NewsAdapter(Context context, int sectionNumber) {
@@ -32,7 +28,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
         this.sectionNumber = sectionNumber;
         this.inflater = LayoutInflater.from(context);
         options = new RequestOptions().placeholder(R.drawable.ic_loading).error(R.drawable.ic_null);
-        dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
+        MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
         db = dbHelper.getWritableDatabase();
 
     }
@@ -49,28 +45,31 @@ public class NewsAdapter extends RecyclerView.Adapter {
         ViewHolder viewHolder = (ViewHolder) holder;
 
         //查询出第(position+1)行数据
-        Cursor cursor = db.query(SQLTableString.newsTableName[sectionNumber],
+        final Cursor cursor = db.query(SQLTableString.newsTableName[sectionNumber],
                 null, "id = ?", new String[]{String.valueOf(position + 1)},
                 null, null, null, null);
 
-        Log.i("NewsAdapter", "onBindViewHolder: --cursor.moveToFirst()="+ cursor.moveToFirst());
-        if (cursor.moveToFirst()){
+        Log.i("NewsAdapter", "onBindViewHolder: --cursor.moveToFirst()=" + cursor.moveToFirst());
+        if (cursor.moveToFirst()) {
             Glide.with(context)//使用Glide显示图片
                     .load(cursor.getString(cursor.getColumnIndex("picUrl")))
                     .apply(options)
                     .into(viewHolder.imageView);
             viewHolder.title.setText(cursor.getString(cursor.getColumnIndex("title")));
             viewHolder.newsSource.setText(cursor.getString(cursor.getColumnIndex("description")));
+
+            //为ItemView设置点击事件
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                String url = cursor.getString(cursor.getColumnIndex("url"));
+
+                @Override
+                public void onClick(View v) {
+                    myItemClickListener.onItemClick(url);//调用NewsFragment中的onItemClick()方法。
+                }
+            });
         }
         cursor.close();
 
-        //为ItemView设置点击事件
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                myItemClickListener.onItemClick(position);//调用NewsFragment中的onItemClick()方法。
-            }
-        });
     }
 
     @Override
@@ -88,7 +87,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
         private TextView newsSource;
         private ImageView imageView;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.tv_item_title);
             newsSource = itemView.findViewById(R.id.tv_item_source);
