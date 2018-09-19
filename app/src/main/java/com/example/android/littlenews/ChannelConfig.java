@@ -42,4 +42,10 @@ public class ChannelConfig {
             "前端",
             "all",
     };
+
+    //休息频道
+    public static String[] rest = {
+            "福利",
+            "休息视频",
+    };
 }

@@ -36,7 +36,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(inflater.inflate(R.layout.news_item_rl, null));
+        return new ViewHolder(inflater.inflate(R.layout.item_news, null));
     }
 
     @Override
@@ -89,7 +89,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
 
         ViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.tv_item_title);
+            title = itemView.findViewById(R.id.tv_item_desc);
             newsSource = itemView.findViewById(R.id.tv_item_source);
             imageView = itemView.findViewById(R.id.iv_item_imgsrc);
         }

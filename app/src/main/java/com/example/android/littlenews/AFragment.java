@@ -33,7 +33,7 @@ public class AFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tab_layout);
         newsPagerAdapter = new NewsPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(newsPagerAdapter);
-        viewPager.setOffscreenPageLimit(5);//预加载5个Tab
+        viewPager.setOffscreenPageLimit(1);//预加载1个Tab
         tabLayout.setTabTextColors(Color.BLACK, getResources().getColor(R.color.tab_selected));//设置文字默认背景色和选中的背景色
         tabLayout.setupWithViewPager(viewPager);
         //取消切换时的过渡动画

@@ -1,6 +1,5 @@
 package com.example.android.littlenews;
 
-import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +9,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,17 +19,19 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-public class GankFragment extends Fragment implements MyItemClickListener {
+import cn.jzvd.Jzvd;
+
+public class RestFragment extends Fragment{
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private int sectionNumber;
-    private final int navigationItemNumber = 1;
+    private final int navigationItemNumber = 2;
 
-    public GankFragment() {
+    public RestFragment() {
     }
 
-    public static GankFragment newInstance(int sectionNumber) {
-        GankFragment fragment = new GankFragment();
+    public static RestFragment newInstance(int sectionNumber) {
+        RestFragment fragment = new RestFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -38,12 +40,12 @@ public class GankFragment extends Fragment implements MyItemClickListener {
 
     private MyRecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    GankAdapter gankAdapter;
+    private RestAdapter restAdapter;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         assert getArguments() != null;
         sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
         final View rootView = inflater.inflate(R.layout.content_main, container, false);
@@ -58,8 +60,15 @@ public class GankFragment extends Fragment implements MyItemClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+        //从网络获取内容
+        new NetAndDataTask(getActivity(), navigationItemNumber, sectionNumber).execute();
 //        InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
-        new NetAndDataTask(getActivity(),navigationItemNumber,sectionNumber).execute();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Jzvd.releaseAllVideos();
     }
 
     @Override
@@ -86,7 +95,7 @@ public class GankFragment extends Fragment implements MyItemClickListener {
         int secNumber = messageEvent.getsecNumber();
         int navNumber = messageEvent.getnavNumber();
         if (navigationItemNumber == navNumber && secNumber == sectionNumber) {
-            gankAdapter.notifyDataSetChanged();
+            restAdapter.notifyDataSetChanged();
             swipeRefreshLayout.setRefreshing(false);
         }
     }
@@ -94,13 +103,22 @@ public class GankFragment extends Fragment implements MyItemClickListener {
     public void initRecyclerView() {
 
         //RecyclerView
-        //布局管理器，使用线性布局
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
+
+        //布局管理器
+        if (SQLTableString.restTableName[sectionNumber].equals("Pictures")) {
+            // 图片使用瀑布流
+            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+
+        } else{
+            //视频使用线性布局
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(layoutManager);
+        }
+
+
         //绑定适配器
-        gankAdapter = new GankAdapter(getActivity(), sectionNumber);
-        gankAdapter.setOnItemClickListener(this);
-        recyclerView.setAdapter(gankAdapter);
+        restAdapter = new RestAdapter(getActivity(), sectionNumber);
+        recyclerView.setAdapter(restAdapter);
         //分割线
         recyclerView.addItemDecoration(new MyDecoration());
         //动画效果
@@ -110,10 +128,10 @@ public class GankFragment extends Fragment implements MyItemClickListener {
         recyclerView.setOnBottomCallback(new MyRecyclerView.OnBottomCallback() {
             @Override
             public void onBottom() {
-
-//                gankAdapter.notifyDataSetChanged();
+//                newsAdapter.notifyDataSetChanged();
             }
         });
+
         swipeRefreshLayout.setRefreshing(true);
         //下拉刷新
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -121,25 +139,18 @@ public class GankFragment extends Fragment implements MyItemClickListener {
             public void onRefresh() {
                 new NetAndDataTask(getActivity(), navigationItemNumber, sectionNumber).execute();
 //                InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
-//                gankAdapter.notifyDataSetChanged();
+//                restAdapter.notifyDataSetChanged();
 //                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
     }
 
-    @Override
-    public void onItemClick(String url) {
-        Intent intent = new Intent(getActivity(), NewsDetailsActivity.class);
-        intent.putExtra("baseUrl", url);
-        startActivity(intent);
-    }
-
     class MyDecoration extends RecyclerView.ItemDecoration {
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
-            outRect.set(0, 0, 0, getResources().getDimensionPixelOffset(R.dimen.dividerHeight));
+            outRect.set(getResources().getDimensionPixelOffset(R.dimen.cardViewDivider), getResources().getDimensionPixelOffset(R.dimen.cardViewDivider), getResources().getDimensionPixelOffset(R.dimen.cardViewDivider), getResources().getDimensionPixelOffset(R.dimen.cardViewDivider));
         }
     }
 }

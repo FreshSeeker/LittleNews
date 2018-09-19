@@ -3,7 +3,6 @@ package com.example.android.littlenews;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 public class NetAndDataTask extends AsyncTask<Void, Integer, Boolean> {
@@ -21,7 +20,6 @@ public class NetAndDataTask extends AsyncTask<Void, Integer, Boolean> {
 
     @Override
     protected void onPreExecute() {
-        super.onPreExecute();
     }
 
     @Override
@@ -44,6 +42,8 @@ public class NetAndDataTask extends AsyncTask<Void, Integer, Boolean> {
 
     @Override
     protected void onPostExecute(Boolean aBoolean) {
-        super.onPostExecute(aBoolean);
+       if (aBoolean){
+//           Toast.makeText(mContext, "加载完成！", Toast.LENGTH_SHORT).show();
+       }
     }
 }

@@ -14,9 +14,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.android.littlenews.bean.GankBean;
-
-import java.util.List;
 
 public class GankAdapter extends RecyclerView.Adapter {
     private Context context;
@@ -39,7 +36,7 @@ public class GankAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(inflater.inflate(R.layout.gank_item_rl, null));
+        return new ViewHolder(inflater.inflate(R.layout.item_gank, null));
     }
 
     @Override

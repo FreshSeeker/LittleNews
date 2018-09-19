@@ -12,6 +12,8 @@ public class APIConfig {
         return ChannelConfig.getEnChannel(sectionNumber) + key + num;
     }
 
+
+
     //干货API
     private static final String gankBaseUrl = "http://gank.io/api/data/";
 
@@ -24,20 +26,40 @@ public class APIConfig {
         return ChannelConfig.ganks[sectionNumber] + count + page;
     }
 
+
+    //Rest API
+    private static final String restBaseUrl = "http://gank.io/api/data/";
+
+    private static final String rcount = "/20";
+
+    private static final String rpage = "/1";
+
+    private static String getRestUrl(int sectionNumber){
+
+        return ChannelConfig.rest[sectionNumber] + rcount + rpage;
+    }
+
     //统一获取baseUrl的方法
     public static String getBaseUrl(){
         if (MainActivity.navigationItemNumber ==0){
             return newsBaseUrl;
-        }else{
+        }else if (MainActivity.navigationItemNumber ==1){
             return gankBaseUrl;
+        }else {
+            return restBaseUrl;
         }
     }
     //统一获取pathUrl的方法
     public static String getPathUrl( int sectionNumber){
+
         if (MainActivity.navigationItemNumber ==0){
             return getNewsUrl(sectionNumber);
-        }else{
+
+        }else if (MainActivity.navigationItemNumber ==1){
             return getGankUrl(sectionNumber);
+
+        }else {
+            return getRestUrl(sectionNumber);
         }
     }
 

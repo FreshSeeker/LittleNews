@@ -4,8 +4,9 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="tab_selected">#f3eeef</color>
-    <color name="itemDecoration">#e3e0e1</color>
+    <color name="itemDecoration">#ffffff</color>
     <color name="item_list">#f3eeef</color>
+    <color name="cardBack">#ffffff</color>
 </resources>
 
 

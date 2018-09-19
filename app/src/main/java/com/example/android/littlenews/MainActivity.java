@@ -13,11 +13,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
+import cn.jzvd.Jzvd;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     AFragment aFragment;
     BFragment bFragment;
+    CFragment cFragment;
 
     public static int navigationItemNumber = 0;
 
@@ -27,18 +32,14 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //创建SQLite数据表
-        MyDataBaseHelper dbHelper = new MyDataBaseHelper(this, "TableStore.db", null, 1);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
         //实例化AFragment
         aFragment = new AFragment();
         //把Fragment添加到Activity中
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_fl, aFragment).commitAllowingStateLoss();
-
         initView();
 
     }
+
 
     public void initView() {
         //菜单栏
@@ -74,6 +75,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+
+        if (Jzvd.backPress()) {
+            return;
+        }
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -131,10 +137,14 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_image_video) {
             navigationItemNumber = 2;
+            if (cFragment == null) {
+                cFragment = new CFragment();
+            }
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_fl, cFragment).commitAllowingStateLoss();
         } else if (id == R.id.nav_share) {
-            navigationItemNumber = 3;
+
         } else if (id == R.id.nav_send) {
-            navigationItemNumber = 4;
+
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

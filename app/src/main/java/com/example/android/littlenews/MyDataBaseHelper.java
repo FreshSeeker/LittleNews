@@ -12,6 +12,7 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        //news表格
         db.execSQL(SQLTableString.CREATE_SOSIAL);
         db.execSQL(SQLTableString.CREATE_GUONEI);
         db.execSQL(SQLTableString.CREATE_WORLD);
@@ -21,11 +22,16 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQLTableString.CREATE_FOOTBALL);
         db.execSQL(SQLTableString.CREATE_KEJI);
 
+        //gank表格
         db.execSQL(SQLTableString.CREATE_ANDROID);
         db.execSQL(SQLTableString.CREATE_IOS);
         db.execSQL(SQLTableString.CREATE_TUOZHAN);
         db.execSQL(SQLTableString.CREATE_QIANDUAN);
         db.execSQL(SQLTableString.CREATE_ALLGANKS);
+
+        //休息频道表格
+        db.execSQL(SQLTableString.CREATE_VIDEOS);
+        db.execSQL(SQLTableString.CREATE_PICTURES);
     }
 
     @Override
