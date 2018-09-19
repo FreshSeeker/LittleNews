@@ -32,6 +32,10 @@ public class MyDataBaseHelper extends SQLiteOpenHelper {
         //休息频道表格
         db.execSQL(SQLTableString.CREATE_VIDEOS);
         db.execSQL(SQLTableString.CREATE_PICTURES);
+
+        //保存编码过的url
+        db.execSQL(SQLTableString.CREATE_VID_URL);
+
     }
 
     @Override

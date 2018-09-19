@@ -22,6 +22,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class NewsFragment extends Fragment implements MyItemClickListener {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private int INIT_STATE = 1;
     private int sectionNumber;
     private final int navigationItemNumber = 0;
 
@@ -50,17 +51,17 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         swipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh);
         recyclerView = rootView.findViewById(R.id.recycler_view);
 
-        Log.i("NewsFragment", "onCreateView: "+sectionNumber);
+        Log.i("NewsFragment", "onCreateView: " + sectionNumber);
         initRecyclerView();
         return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
-//        InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
-        new NetAndDataTask(getActivity(), navigationItemNumber, sectionNumber).execute();
-        Log.i("NewsFragment", "onViewCreated: "+sectionNumber);
+        if (INIT_STATE == 1) {
+            new NetAndDataTask(getActivity(), navigationItemNumber, sectionNumber).execute();
+            INIT_STATE = INIT_STATE + 1;
+        }
     }
 
     @Override
@@ -68,7 +69,7 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         super.onCreate(savedInstanceState);
         //注册eventbus
         EventBus.getDefault().register(this);
-        Log.i("NewsFragment", "onCreate: "+sectionNumber);
+        Log.i("NewsFragment", "onCreate: " + sectionNumber);
     }
 
 
@@ -79,7 +80,7 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        Log.i("NewsFragment", "onDestroy: "+sectionNumber);
+        Log.i("NewsFragment", "onDestroy: " + sectionNumber);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -114,7 +115,7 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
 //                newsAdapter.notifyDataSetChanged();
             }
         });
-        swipeRefreshLayout.setRefreshing(true);
+
         //下拉刷新
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

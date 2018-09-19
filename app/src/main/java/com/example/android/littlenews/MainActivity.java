@@ -1,5 +1,6 @@
 package com.example.android.littlenews;
 
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -9,11 +10,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import cn.jzvd.Jzvd;
 
@@ -38,8 +42,28 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_fl, aFragment).commitAllowingStateLoss();
         initView();
 
+        //注册eventbus
+        EventBus.getDefault().register(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //解除eventbus注册
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(MessageEvent messageEvent) {
+        Log.i("MainActivity", "Event: ");
+        int secNumber = messageEvent.getsecNumber();
+        int navNumber = messageEvent.getnavNumber();
+        if (2 == navNumber && secNumber == 1) {
+           startService(new Intent(this,MyIntentService.class));
+        }
+    }
 
     public void initView() {
         //菜单栏

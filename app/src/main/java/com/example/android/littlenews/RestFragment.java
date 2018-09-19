@@ -21,9 +21,10 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import cn.jzvd.Jzvd;
 
-public class RestFragment extends Fragment{
+public class RestFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private int INIT_STATE = 1;
     private int sectionNumber;
     private final int navigationItemNumber = 2;
 
@@ -53,16 +54,17 @@ public class RestFragment extends Fragment{
         recyclerView = rootView.findViewById(R.id.recycler_view);
 
         initRecyclerView();
-
         return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        if (INIT_STATE == 1) {
+            //从网络获取内容
+            new NetAndDataTask(getActivity(), navigationItemNumber, sectionNumber).execute();
+            INIT_STATE = INIT_STATE + 1;
+        }
 
-        //从网络获取内容
-        new NetAndDataTask(getActivity(), navigationItemNumber, sectionNumber).execute();
-//        InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
     }
 
     @Override
@@ -76,7 +78,7 @@ public class RestFragment extends Fragment{
         super.onCreate(savedInstanceState);
         //注册eventbus
         EventBus.getDefault().register(this);
-        Log.i("NewsFragment", "onCreate: "+sectionNumber);
+        Log.i("NewsFragment", "onCreate: " + sectionNumber);
     }
 
 
@@ -87,7 +89,7 @@ public class RestFragment extends Fragment{
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        Log.i("NewsFragment", "onDestroy: "+sectionNumber);
+        Log.i("NewsFragment", "onDestroy: " + sectionNumber);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -107,9 +109,9 @@ public class RestFragment extends Fragment{
         //布局管理器
         if (SQLTableString.restTableName[sectionNumber].equals("Pictures")) {
             // 图片使用瀑布流
-            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
-        } else{
+        } else {
             //视频使用线性布局
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
@@ -132,7 +134,6 @@ public class RestFragment extends Fragment{
             }
         });
 
-        swipeRefreshLayout.setRefreshing(true);
         //下拉刷新
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

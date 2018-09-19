@@ -22,6 +22,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class GankFragment extends Fragment implements MyItemClickListener {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private int INIT_STATE = 1;
     private int sectionNumber;
     private final int navigationItemNumber = 1;
 
@@ -57,9 +58,11 @@ public class GankFragment extends Fragment implements MyItemClickListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        if (INIT_STATE == 1) {
+            new NetAndDataTask(getActivity(), navigationItemNumber, sectionNumber).execute();
+            INIT_STATE = INIT_STATE + 1;
+        }
 
-//        InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
-        new NetAndDataTask(getActivity(),navigationItemNumber,sectionNumber).execute();
     }
 
     @Override
@@ -67,7 +70,7 @@ public class GankFragment extends Fragment implements MyItemClickListener {
         super.onCreate(savedInstanceState);
         //注册eventbus
         EventBus.getDefault().register(this);
-        Log.i("NewsFragment", "onCreate: "+sectionNumber);
+        Log.i("NewsFragment", "onCreate: " + sectionNumber);
     }
 
 
@@ -78,7 +81,7 @@ public class GankFragment extends Fragment implements MyItemClickListener {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        Log.i("NewsFragment", "onDestroy: "+sectionNumber);
+        Log.i("NewsFragment", "onDestroy: " + sectionNumber);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -114,7 +117,7 @@ public class GankFragment extends Fragment implements MyItemClickListener {
 //                gankAdapter.notifyDataSetChanged();
             }
         });
-        swipeRefreshLayout.setRefreshing(true);
+
         //下拉刷新
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

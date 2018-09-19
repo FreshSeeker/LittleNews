@@ -116,4 +116,12 @@ public class SQLTableString {
     public static final String CREATE_VIDEOS = "create table Videos(" + videoSQLString + ")";
     public static final String CREATE_PICTURES = "create table Pictures(" + picSQLString + ")";
 
+
+
+
+
+
+    //创建一个表格用于保存video的编码过的url
+    public static final String CREATE_VID_URL = "create table VideoUrl( id integer primary key autoincrement, url text)";
+
 }

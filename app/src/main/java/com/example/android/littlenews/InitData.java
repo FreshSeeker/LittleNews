@@ -3,6 +3,7 @@ package com.example.android.littlenews;
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -43,7 +44,6 @@ public class InitData {
                     .subscribe(new Observer<NewsBean>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-
                             Log.i("---initData0---", "onSubscribe: ");
                         }
 
@@ -101,7 +101,6 @@ public class InitData {
 
                         @Override
                         public void onNext(GankBean gankBean) {
-
                             if (gankBean != null) {
                                 //SQLite数据表格
                                 MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
@@ -131,7 +130,6 @@ public class InitData {
                                 dbHelper.close();
                                 db.close();
                             }
-
                         }
 
                         @Override
@@ -145,6 +143,7 @@ public class InitData {
                         }
                     });
         } else if (navigationItemNumber == 2) {//休息频道的网络请求，得到 RestBean 对象
+
             Observable<RestBean> observable = request_interface.getRest(APIConfig.getPathUrl(sectionNumber));
 
             observable.subscribeOn(Schedulers.io())
@@ -160,6 +159,7 @@ public class InitData {
                             Log.i("---initData2---", "onNext: restBean = " + restBean);
 
                             if (restBean != null) {
+
                                 if (SQLTableString.restTableName[sectionNumber].equals("Pictures")) {
                                     //SQLite数据表格
                                     MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
@@ -170,6 +170,7 @@ public class InitData {
                                     //让id重新从1开始
                                     String string = "update sqlite_sequence set seq=0 where name='" + SQLTableString.restTableName[sectionNumber] + "'";
                                     db.execSQL(string);
+
                                     //再存进新的数据
                                     for (int i = 0; i < restBean.getResults().size(); i++) {
                                         values.put("_id", restBean.getResults().get(i).get_id());
@@ -187,15 +188,26 @@ public class InitData {
                                     dbHelper.close();
                                     db.close();
                                 } else {
-//                                    for (int i = 0; i < restBean.getResults().size(); i++) {
-//                                        transform(context, restBean.getResults().get(i).getUrl());
-//                                    }
+                                    //SQLite数据表格
+                                    MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
+                                    SQLiteDatabase db = dbHelper.getWritableDatabase();
+                                    ContentValues values = new ContentValues();
+                                    //先清空表中数据，
+                                    db.delete("VideoUrl", null, null);
+                                    //让id重新从1开始
+                                    String string = "update sqlite_sequence set seq=0 where name='" + "VideoUrl" + "'";
+                                    db.execSQL(string);
 
+                                    //再存进新的数据
+                                    for (int i = 0; i < restBean.getResults().size(); i++) {
+                                        values.put("url", restBean.getResults().get(i).getUrl());
+                                        db.insert("VideoUrl", null, values);
+                                        values.clear();
+                                    }
+                                    dbHelper.close();
+                                    db.close();
                                 }
-
-
                             }
-
                         }
 
                         @Override
@@ -214,66 +226,5 @@ public class InitData {
         EventBus.getDefault().post(new MessageEvent(navigationItemNumber, sectionNumber));
     }
 
-    private static void transform(final Context context, String pathUrl) {
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.lylares.com/video/douying/?AppKey=8n4HdUBXVe&url=")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-        GetRequest_Interface request_interface = retrofit.create(GetRequest_Interface.class);
-        Observable<TransformBean> observable = request_interface.getTransform(pathUrl);
-
-        observable.subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.io())
-                .subscribe(new Observer<TransformBean>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        Log.i("---initData99---", "onSubscribe: ");
-                    }
-
-                    @Override
-                    public void onNext(TransformBean transformBean) {
-                        Log.i("---initData99---", "onNext: restBean = " + transformBean);
-
-                        if (transformBean != null) {
-                            //SQLite数据表格
-                            MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
-                            SQLiteDatabase db = dbHelper.getWritableDatabase();
-                            ContentValues values = new ContentValues();
-                            //先清空表中数据，
-                            db.delete("Videos", null, null);
-                            //让id重新从1开始
-                            String string = "update sqlite_sequence set seq=0 where name='" + "Videos" + "'";
-                            db.execSQL(string);
-                            //再存进新的数据
-                            values.put("msg", transformBean.getMsg());
-                            values.put("url", transformBean.getUrl());
-                            values.put("cover", transformBean.getVinfo().getCover());
-                            values.put("title", transformBean.getVinfo().getTitle());
-                            values.put("avatar", transformBean.getUserinfo().getAvatar());
-                            values.put("nickname", transformBean.getUserinfo().getNickname());
-
-                            db.insert("Videos", null, values);
-                            values.clear();
-
-                            dbHelper.close();
-                            db.close();
-                        }
-
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.i("---initData99---", "onError: ");
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        Log.i("---initData99---", "onComplete: ");
-                    }
-                });
-    }
 }
 

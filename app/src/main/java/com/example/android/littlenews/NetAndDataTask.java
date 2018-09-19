@@ -29,6 +29,7 @@ public class NetAndDataTask extends AsyncTask<Void, Integer, Boolean> {
             InitData.initData(mContext, navigationItemNumber, sectionNumber);
             isLoaded = true;
         } catch (Exception e){
+            e.printStackTrace();
             isLoaded = false;
         }
         Log.i("NetAndDataTask", "doInBackground: "+isLoaded);
