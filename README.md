@@ -1,5 +1,5 @@
 # LittleNews
-干货日报，一款可以看新闻，学技术，看视频浏览图片的APP。
+看点新闻，一款可以看新闻，学技术，看视频浏览图片的APP。
 <br>基于Material Design + RxJava2 + Retrofit + Glide + JiaoZiVideoPlayer
 ## 功能板块
 看点新闻 - 社会，国内，国际，娱乐等频道相关最新热点新闻；
