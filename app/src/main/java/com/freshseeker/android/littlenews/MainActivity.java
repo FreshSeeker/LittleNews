@@ -1,9 +1,9 @@
 package com.freshseeker.android.littlenews;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -24,9 +24,10 @@ import cn.jzvd.Jzvd;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    AFragment aFragment;
-    BFragment bFragment;
-    CFragment cFragment;
+    private AFragment aFragment;
+    private BFragment bFragment;
+    private CFragment cFragment;
+    private Toolbar toolbar;
 
     public static int navigationItemNumber = 0;
 
@@ -41,7 +42,6 @@ public class MainActivity extends AppCompatActivity
         //把Fragment添加到Activity中
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_fl, aFragment).commitAllowingStateLoss();
         initView();
-
         //注册eventbus
         EventBus.getDefault().register(this);
     }
@@ -61,13 +61,14 @@ public class MainActivity extends AppCompatActivity
         int secNumber = messageEvent.getsecNumber();
         int navNumber = messageEvent.getnavNumber();
         if (2 == navNumber && secNumber == 1) {
-           startService(new Intent(this,MyIntentService.class));
+            startService(new Intent(this, MyIntentService.class));
         }
     }
 
     public void initView() {
         //菜单栏
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.some_news);
         setSupportActionBar(toolbar);
 
 //        //悬浮按钮
@@ -93,6 +94,11 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+    }
+
+    @Override
+    public void setTitle(int titleId) {
+        super.setTitle(titleId);
     }
 
     private long mBackPressedTime;
@@ -134,6 +140,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -141,7 +148,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -150,6 +157,7 @@ public class MainActivity extends AppCompatActivity
             if (aFragment == null) {
                 aFragment = new AFragment();
             }
+            toolbar.setTitle(R.string.some_news);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_fl, aFragment).commitAllowingStateLoss();
 
         } else if (id == R.id.nav_gank) {
@@ -157,6 +165,7 @@ public class MainActivity extends AppCompatActivity
             if (bFragment == null) {
                 bFragment = new BFragment();
             }
+            toolbar.setTitle(R.string.some_ganks);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_fl, bFragment).commitAllowingStateLoss();
 
         } else if (id == R.id.nav_image_video) {
@@ -164,11 +173,18 @@ public class MainActivity extends AppCompatActivity
             if (cFragment == null) {
                 cFragment = new CFragment();
             }
+            toolbar.setTitle(R.string.take_a_rest);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container_fl, cFragment).commitAllowingStateLoss();
+
         } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.github_link));
+            sendIntent.setType("text/plain");
+            startActivity(Intent.createChooser(sendIntent, getString(R.string.share_to)));
+        }else if (id == R.id.nav_about) {
+            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

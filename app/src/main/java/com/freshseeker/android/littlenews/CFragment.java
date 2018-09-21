@@ -34,7 +34,8 @@ public class CFragment extends Fragment {
         restPagerAdapter = new RestPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(restPagerAdapter);
         viewPager.setOffscreenPageLimit(1);//预加载1个Tab
-        tabLayout.setTabTextColors(Color.BLACK, getResources().getColor(R.color.tab_selected));//设置文字默认背景色和选中的背景色
+        //setTabMode
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setupWithViewPager(viewPager);
 
         super.onViewCreated(view, savedInstanceState);

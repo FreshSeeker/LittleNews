@@ -7,4 +7,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="dividerHeight">1dp</dimen>
     <dimen name="cardViewDivider">5dp</dimen>
+    <dimen name="cardViewTop">10dp</dimen>
 </resources>

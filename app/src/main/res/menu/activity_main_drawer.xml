@@ -6,16 +6,16 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_news"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="看点新闻" />
+            android:icon="@drawable/ic_menu_news"
+            android:title="@string/some_news"/>
         <item
             android:id="@+id/nav_gank"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="来点干货" />
+            android:icon="@drawable/ic_menu_ganks"
+            android:title="@string/some_ganks" />
         <item
             android:id="@+id/nav_image_video"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="休息一下" />
+            android:title="@string/take_a_rest" />
 
     </group>
 
@@ -24,11 +24,15 @@
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="@string/share" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_menu_about"
+                android:title="@string/about" />
+            <!--<item-->
+                <!--android:id="@+id/nav_send"-->
+                <!--android:icon="@drawable/ic_menu_send"-->
+                <!--android:title="Send" />-->
         </menu>
     </item>
 

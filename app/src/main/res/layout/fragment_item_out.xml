@@ -7,7 +7,9 @@
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
-        app:tabMode="scrollable"
+        android:background="@color/tab_background"
+        app:tabSelectedTextColor="@color/tab_selected"
+        app:tabTextColor="@color/tabTextColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </android.support.design.widget.TabLayout>

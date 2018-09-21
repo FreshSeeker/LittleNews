@@ -134,7 +134,7 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
-            outRect.set(0, 0, 0, getResources().getDimensionPixelOffset(R.dimen.dividerHeight));
+            outRect.set(getResources().getDimensionPixelOffset(R.dimen.cardViewDivider), getResources().getDimensionPixelOffset(R.dimen.cardViewTop), getResources().getDimensionPixelOffset(R.dimen.cardViewDivider), 0);
         }
     }
 

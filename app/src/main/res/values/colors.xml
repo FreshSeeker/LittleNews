@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="tab_selected">#f3eeef</color>
-    <color name="itemDecoration">#ffffff</color>
-    <color name="item_list">#f3eeef</color>
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryDark">#009688</color>
+    <color name="colorAccent">#009688</color>
+    <color name="tab_selected">#009688</color>
+    <color name="tab_Selected_Text_Color">#009688</color>
+    <color name="tabTextColor">#000000</color>
+    <color name="itemDecoration">#F8F8FF</color>
+    <color name="item_list">#ffffff</color>
     <color name="cardBack">#ffffff</color>
+    <color name="tab_background">#E0EEEE</color>
 </resources>
 
 
