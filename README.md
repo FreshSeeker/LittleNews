@@ -15,6 +15,8 @@
 <br>使用WebView做阅览页
 <br>使用EventBus方便组件之间进行通信，异步处理
 <br>使用SQLite进行数据储存和增删改查
+## APK下载
+https://github.com/FreshSeeker/LittleNews/blob/master/app/release/app-release.apk
 ## Thanks
 API来源于天行数据、干货集中营。感谢开放的API。
 <br>还参考了很多大神的类似作品，感谢大家的开源精神。
