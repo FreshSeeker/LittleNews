@@ -77,7 +77,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
         return 20;
     }
 
-    //绑定MainActivity传进来的点击监听器
+    //绑定NewsFragment传进来的点击监听器
     public void setOnItemClickListener(MyItemClickListener listener) {
         this.myItemClickListener = listener;
     }

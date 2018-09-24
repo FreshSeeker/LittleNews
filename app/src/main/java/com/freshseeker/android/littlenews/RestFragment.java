@@ -21,7 +21,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import cn.jzvd.Jzvd;
 
-public class RestFragment extends Fragment {
+public class RestFragment extends Fragment implements MyItemClickListener{
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private int INIT_STATE = 1;
@@ -97,6 +97,17 @@ public class RestFragment extends Fragment {
         int secNumber = messageEvent.getsecNumber();
         int navNumber = messageEvent.getnavNumber();
         if (navigationItemNumber == navNumber && secNumber == sectionNumber) {
+            if (secNumber == 0) {
+                restAdapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void serviceEvent(ServiceEvent serviceEvent) {
+        if (serviceEvent.getUrlLoaded()) {
             restAdapter.notifyDataSetChanged();
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -120,6 +131,7 @@ public class RestFragment extends Fragment {
 
         //绑定适配器
         restAdapter = new RestAdapter(getActivity(), sectionNumber);
+        restAdapter.setOnItemClickListener(this);
         recyclerView.setAdapter(restAdapter);
         //分割线
         recyclerView.addItemDecoration(new MyDecoration());
@@ -145,6 +157,12 @@ public class RestFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onItemClick(String url) {
+        PictureDialog pictureDialog = new PictureDialog(getActivity(), url);
+        pictureDialog.show();
     }
 
     class MyDecoration extends RecyclerView.ItemDecoration {

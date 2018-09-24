@@ -10,6 +10,7 @@
     <color name="item_list">#ffffff</color>
     <color name="cardBack">#ffffff</color>
     <color name="tab_background">#E0EEEE</color>
+    <color name="save_back">#cecece</color>
 </resources>
 
 

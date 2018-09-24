@@ -19,6 +19,7 @@ import cn.jzvd.JzvdStd;
 public class RestAdapter extends RecyclerView.Adapter {
     private Context context;
     private LayoutInflater inflater;
+    private MyItemClickListener myItemClickListener;
     private RequestOptions options;
     private int sectionNumber;
     private SQLiteDatabase db;
@@ -57,6 +58,14 @@ public class RestAdapter extends RecyclerView.Adapter {
                         .load(cursor.getString(cursor.getColumnIndex("url")))
                         .apply(options)
                         .into(picViewHolder.imageView);
+                //为ItemView设置点击事件
+                picViewHolder.imageView.setOnClickListener(new View.OnClickListener() {
+                    String url = cursor.getString(cursor.getColumnIndex("url"));
+                    @Override
+                    public void onClick(View v) {
+                        myItemClickListener.onItemClick(url);//调用RestFragment中的onItemClick()方法。
+                    }
+                });
             }
             cursor.close();
 
@@ -74,6 +83,7 @@ public class RestAdapter extends RecyclerView.Adapter {
                 videoViewHolder.jzvdStd.setUp(url, title, Jzvd.SCREEN_WINDOW_NORMAL);
                 Glide.with(context)
                         .load(cover)
+                        .apply(options)
                         .into(videoViewHolder.jzvdStd.thumbImageView);
             }
             cursor.close();
@@ -83,6 +93,11 @@ public class RestAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return 20;
+    }
+
+    //绑定RestFragment传进来的点击监听器
+    public void setOnItemClickListener(MyItemClickListener listener) {
+        this.myItemClickListener = listener;
     }
 
 
@@ -105,6 +120,7 @@ public class RestAdapter extends RecyclerView.Adapter {
             jzvdStd = itemView.findViewById(R.id.player_video);
         }
     }
+
 
 
 }

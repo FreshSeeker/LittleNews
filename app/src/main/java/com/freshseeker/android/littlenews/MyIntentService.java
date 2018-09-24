@@ -11,6 +11,8 @@ import android.util.Log;
 import com.freshseeker.android.littlenews.bean.TransformBean;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import org.greenrobot.eventbus.EventBus;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -97,6 +99,8 @@ public class MyIntentService extends IntentService {
             }while (cursor.moveToNext());
         }
         cursor.close();
+        //EventBus 发送消息
+        EventBus.getDefault().post(new ServiceEvent(true));
 
     }
 
