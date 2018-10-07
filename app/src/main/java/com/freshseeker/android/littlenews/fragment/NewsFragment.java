@@ -10,17 +10,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.freshseeker.android.littlenews.event.MessageEvent;
-import com.freshseeker.android.littlenews.base.MyRecyclerView;
-import com.freshseeker.android.littlenews.module.NetAndDataAsyncTask;
 import com.freshseeker.android.littlenews.R;
 import com.freshseeker.android.littlenews.activity.NewsDetailsActivity;
 import com.freshseeker.android.littlenews.adapter.NewsAdapter;
+import com.freshseeker.android.littlenews.base.MyRecyclerView;
+import com.freshseeker.android.littlenews.event.MessageEvent;
+import com.freshseeker.android.littlenews.module.InitData;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -30,6 +29,7 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private int INIT_STATE = 1;
+    private final String TAG = "NewsFragment";
     private int sectionNumber;
     private final int navigationItemNumber = 0;
 
@@ -58,15 +58,16 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         swipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh);
         recyclerView = rootView.findViewById(R.id.recycler_view);
 
-        Log.i("NewsFragment", "onCreateView: " + sectionNumber);
         initRecyclerView();
+
         return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (INIT_STATE == 1) {
-            new NetAndDataAsyncTask(getActivity(), navigationItemNumber, sectionNumber).execute();
+            //初始化数据
+            InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
             INIT_STATE = INIT_STATE + 1;
         }
     }
@@ -76,9 +77,7 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         super.onCreate(savedInstanceState);
         //注册eventbus
         EventBus.getDefault().register(this);
-        Log.i("NewsFragment", "onCreate: " + sectionNumber);
     }
-
 
     @Override
     public void onDestroy() {
@@ -87,7 +86,6 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        Log.i("NewsFragment", "onDestroy: " + sectionNumber);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -127,13 +125,9 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new NetAndDataAsyncTask(getActivity(), navigationItemNumber, sectionNumber).execute();
-//                InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
-//                newsAdapter.notifyDataSetChanged();
-//                swipeRefreshLayout.setRefreshing(false);
+                InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
             }
         });
-
 
     }
 

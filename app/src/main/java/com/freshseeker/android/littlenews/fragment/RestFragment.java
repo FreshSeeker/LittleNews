@@ -10,19 +10,18 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.freshseeker.android.littlenews.module.NetAndDataAsyncTask;
-import com.freshseeker.android.littlenews.event.MessageEvent;
+import com.freshseeker.android.littlenews.R;
+import com.freshseeker.android.littlenews.adapter.RestAdapter;
 import com.freshseeker.android.littlenews.base.MyRecyclerView;
 import com.freshseeker.android.littlenews.base.PictureDialog;
-import com.freshseeker.android.littlenews.R;
 import com.freshseeker.android.littlenews.config.SQLTableString;
+import com.freshseeker.android.littlenews.event.MessageEvent;
 import com.freshseeker.android.littlenews.event.ServiceEvent;
-import com.freshseeker.android.littlenews.adapter.RestAdapter;
+import com.freshseeker.android.littlenews.module.InitData;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -70,7 +69,7 @@ public class RestFragment extends Fragment implements MyItemClickListener {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (INIT_STATE == 1) {
             //从网络获取内容
-            new NetAndDataAsyncTask(getActivity(), navigationItemNumber, sectionNumber).execute();
+            InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
             INIT_STATE = INIT_STATE + 1;
         }
 
@@ -87,7 +86,6 @@ public class RestFragment extends Fragment implements MyItemClickListener {
         super.onCreate(savedInstanceState);
         //注册eventbus
         EventBus.getDefault().register(this);
-        Log.i("NewsFragment", "onCreate: " + sectionNumber);
     }
 
 
@@ -98,7 +96,6 @@ public class RestFragment extends Fragment implements MyItemClickListener {
         if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
-        Log.i("NewsFragment", "onDestroy: " + sectionNumber);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -159,10 +156,7 @@ public class RestFragment extends Fragment implements MyItemClickListener {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new NetAndDataAsyncTask(getActivity(), navigationItemNumber, sectionNumber).execute();
-//                InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
-//                restAdapter.notifyDataSetChanged();
-//                swipeRefreshLayout.setRefreshing(false);
+                InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
             }
         });
 

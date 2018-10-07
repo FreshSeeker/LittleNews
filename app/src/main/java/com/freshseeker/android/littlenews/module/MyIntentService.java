@@ -36,7 +36,6 @@ public class MyIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        Log.i("MyIntentService", "onHandleIntent: 我被调用了");
         //SQLite数据表格
         dbHelper = new MyDataBaseHelper(this, "TableStore.db", null, 1);
         db = dbHelper.getWritableDatabase();

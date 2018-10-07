@@ -43,11 +43,11 @@ public class GetImageCacheAsyncTask extends AsyncTask<String, Void, File> {
 
         String s = result.getName();
         Log.i("GetImageCacheAsyncTask", "onPostExecute: "+ s);
-        //这里得到的就是我们要的文件了，接下来是保存文件。
+        //这里得到的就是所要的文件了，接下来是保存文件。
         String tPath = FilePathConfig.picSavePath + result.getName() + ".jpg";
         File target = new File(tPath);
 
-        //最后一步就是复制文件咯
+        //最后一步就是复制文件
         try {
             FileUtil.copy(context, result, target);
         } catch (IOException e) {
