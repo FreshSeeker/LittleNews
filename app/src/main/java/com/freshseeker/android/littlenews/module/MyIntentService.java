@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.freshseeker.android.littlenews.config.APIConfig;
 import com.freshseeker.android.littlenews.config.GetRequest_Interface;
 import com.freshseeker.android.littlenews.bean.TransformBean;
 import com.freshseeker.android.littlenews.config.MyDataBaseHelper;
@@ -37,7 +38,7 @@ public class MyIntentService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         //SQLite数据表格
-        dbHelper = new MyDataBaseHelper(this, "TableStore.db", null, 1);
+        dbHelper = new MyDataBaseHelper(this, SQLTableString.tableStore, null, 1);
         db = dbHelper.getWritableDatabase();
 
         db.delete(SQLTableString.restTableName[1], null, null);
@@ -46,41 +47,39 @@ public class MyIntentService extends IntentService {
         db.execSQL(string);
 
         //查询出VideoUrl表格中所有url
-        cursor = db.query("VideoUrl",
+        cursor = db.query(SQLTableString.transferTable,
                 null, null, null,
                 null, null, null, null);
 
         if (cursor.moveToFirst()) {
             do{
-                String url = cursor.getString(cursor.getColumnIndex("url"));
+                String url = cursor.getString(cursor.getColumnIndex(SQLTableString.transferAttributes[1]));
 
                 final Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("https://api.lylares.com/video/douying/")
+                        .baseUrl(APIConfig.transferBaseUrl)
                         .addConverterFactory(GsonConverterFactory.create())
                         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                         .build();
                 GetRequest_Interface request_interface = retrofit.create(GetRequest_Interface.class);
-                Observable<TransformBean> observable = request_interface.getTransform("?AppKey=8n4HdUBXVe&url=" + url);
+                Observable<TransformBean> observable = request_interface.getTransform(APIConfig.transferPathUrl + url);
 
                 observable.subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
                         .subscribe(new Observer<TransformBean>() {
                             @Override
                             public void onSubscribe(Disposable d) {
-                                Log.i("---initData99---", "onSubscribe: ");
                             }
 
                             @Override
                             public void onNext(TransformBean transformBean) {
-                                Log.i("---initData99---", "onNext: restBean = " + transformBean);
                                 ContentValues values = new ContentValues();
                                 if (transformBean != null) {
-                                    values.put("msg", transformBean.getMsg());
-                                    values.put("url", transformBean.getUrl());
-                                    values.put("cover", transformBean.getVinfo().getCover());
-                                    values.put("title", transformBean.getVinfo().getTitle());
-                                    values.put("avatar", transformBean.getUserinfo().getAvatar());
-                                    values.put("nickname", transformBean.getUserinfo().getNickname());
+                                    values.put(SQLTableString.videoTableAttributes[1], transformBean.getMsg());
+                                    values.put(SQLTableString.videoTableAttributes[2], transformBean.getUrl());
+                                    values.put(SQLTableString.videoTableAttributes[3], transformBean.getVinfo().getCover());
+                                    values.put(SQLTableString.videoTableAttributes[4], transformBean.getVinfo().getTitle());
+                                    values.put(SQLTableString.videoTableAttributes[5], transformBean.getUserinfo().getAvatar());
+                                    values.put(SQLTableString.videoTableAttributes[6], transformBean.getUserinfo().getNickname());
 
                                     db.insert(SQLTableString.restTableName[1], null, values);
                                     values.clear();
@@ -89,14 +88,11 @@ public class MyIntentService extends IntentService {
 
                             @Override
                             public void onError(Throwable e) {
-                                Log.i("---initData99---", "onError: -----------------------------------");
-
                                 e.printStackTrace();
                             }
 
                             @Override
                             public void onComplete() {
-                                Log.i("---initData99---", "onComplete: ");
                             }
                         });
             }while (cursor.moveToNext());

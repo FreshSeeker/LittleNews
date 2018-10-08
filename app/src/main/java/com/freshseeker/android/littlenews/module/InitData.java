@@ -27,6 +27,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class InitData {
 
+    /**
+     * 访问网络，将得到的数据保存到SQLite。
+     *
+     * @param context 上下文
+     * @param navigationItemNumber navigation序号
+     * @param sectionNumber Tab的位置
+     */
 
     @SuppressLint("CheckResult")
     public static void initData(final Context context, int navigationItemNumber, final int sectionNumber) {
@@ -47,14 +54,13 @@ public class InitData {
                     .subscribe(new Observer<NewsBean>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-                            Log.i("---initData0---", "onSubscribe: ");
                         }
 
                         @Override
                         public void onNext(NewsBean newsBean) {
                             if (newsBean != null) {
                                 //SQLite数据表格
-                                MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
+                                MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, SQLTableString.tableStore, null, 1);
                                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                                 ContentValues values = new ContentValues();
                                 //先清空表中数据，
@@ -63,35 +69,33 @@ public class InitData {
                                 String string = "update sqlite_sequence set seq=0 where name='" + SQLTableString.newsTableName[sectionNumber] + "'";
                                 db.execSQL(string);
                                 //再存进新的数据
+                                Log.i("---", "onNext: " + newsBean);
+                                Log.i("---", "onNext: " + newsBean.getNewslist());
+                                Log.i("---", "onNext: " + newsBean.getNewslist().size());
                                 for (int i = 0; i < newsBean.getNewslist().size(); i++) {
-                                    values.put("ctime", newsBean.getNewslist().get(i).getCtime());
-                                    values.put("title", newsBean.getNewslist().get(i).getTitle());
-                                    values.put("description", newsBean.getNewslist().get(i).getDescription());
-                                    values.put("picUrl", newsBean.getNewslist().get(i).getPicUrl());
-                                    values.put("url", newsBean.getNewslist().get(i).getUrl());
+                                    values.put(SQLTableString.newsTableAttributes[1], newsBean.getNewslist().get(i).getCtime());
+                                    values.put(SQLTableString.newsTableAttributes[2], newsBean.getNewslist().get(i).getTitle());
+                                    values.put(SQLTableString.newsTableAttributes[3], newsBean.getNewslist().get(i).getDescription());
+                                    values.put(SQLTableString.newsTableAttributes[4], newsBean.getNewslist().get(i).getPicUrl());
+                                    values.put(SQLTableString.newsTableAttributes[5], newsBean.getNewslist().get(i).getUrl());
                                     db.insert(SQLTableString.newsTableName[sectionNumber], null, values);
                                     values.clear();
                                 }
                                 dbHelper.close();
                                 db.close();
-                                Log.i("---initData0---", "onNext: ");
                             }
                         }
 
                         @Override
                         public void onError(Throwable e) {
-
-                            Log.i("---initData0---", "onError: ");
                         }
 
                         @Override
                         public void onComplete() {
-
-                            Log.i("---initData0---", "onComplete: ");
                         }
                     });
 
-        } else if (navigationItemNumber == 1) {//干货集中营的网络请求，得到 GankBean 对象
+        } else if (navigationItemNumber == 1) {//干货集中营的网络请求
             Observable<GankBean> observable = request_interface.getGank(APIConfig.getPathUrl(sectionNumber));
 
             observable.subscribeOn(Schedulers.io())
@@ -99,14 +103,13 @@ public class InitData {
                     .subscribe(new Observer<GankBean>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-                            Log.i("---initData1---", "onSubscribe: ");
                         }
 
                         @Override
                         public void onNext(GankBean gankBean) {
                             if (gankBean != null) {
                                 //SQLite数据表格
-                                MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
+                                MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, SQLTableString.tableStore, null, 1);
                                 SQLiteDatabase db = dbHelper.getWritableDatabase();
                                 ContentValues values = new ContentValues();
                                 //先清空表中数据，
@@ -116,16 +119,16 @@ public class InitData {
                                 db.execSQL(string);
                                 //再存进新的数据
                                 for (int i = 0; i < gankBean.getResults().size(); i++) {
-                                    values.put("_id", gankBean.getResults().get(i).get_id());
-                                    values.put("createdAt", gankBean.getResults().get(i).getCreatedAt());
-                                    values.put("desc", gankBean.getResults().get(i).getDesc());
-                                    values.put("publishedAt", gankBean.getResults().get(i).getPublishedAt());
-                                    values.put("source", gankBean.getResults().get(i).getSource());
-                                    values.put("type", gankBean.getResults().get(i).getType());
-                                    values.put("url", gankBean.getResults().get(i).getUrl());
-                                    values.put("who", gankBean.getResults().get(i).getWho());
+                                    values.put(SQLTableString.gankTableAttributes[1], gankBean.getResults().get(i).get_id());
+                                    values.put(SQLTableString.gankTableAttributes[2], gankBean.getResults().get(i).getCreatedAt());
+                                    values.put(SQLTableString.gankTableAttributes[3], gankBean.getResults().get(i).getDesc());
+                                    values.put(SQLTableString.gankTableAttributes[4], gankBean.getResults().get(i).getPublishedAt());
+                                    values.put(SQLTableString.gankTableAttributes[5], gankBean.getResults().get(i).getSource());
+                                    values.put(SQLTableString.gankTableAttributes[6], gankBean.getResults().get(i).getType());
+                                    values.put(SQLTableString.gankTableAttributes[7], gankBean.getResults().get(i).getUrl());
+                                    values.put(SQLTableString.gankTableAttributes[8], gankBean.getResults().get(i).getWho());
                                     if (gankBean.getResults().get(i).getImages() != null) {
-                                        values.put("image", gankBean.getResults().get(i).getImages().get(0));//只保存第一张图片
+                                        values.put(SQLTableString.gankTableAttributes[9], gankBean.getResults().get(i).getImages().get(0));//只保存第一张图片
                                     }
                                     db.insert(SQLTableString.gankTableName[sectionNumber], null, values);
                                     values.clear();
@@ -137,15 +140,13 @@ public class InitData {
 
                         @Override
                         public void onError(Throwable e) {
-                            Log.i("---initData1---", "onError: ");
                         }
 
                         @Override
                         public void onComplete() {
-                            Log.i("---initData1---", "onComplete: ");
                         }
                     });
-        } else if (navigationItemNumber == 2) {//休息频道的网络请求，得到 RestBean 对象
+        } else if (navigationItemNumber == 2) {//休息频道的网络请求
 
             Observable<RestBean> observable = request_interface.getRest(APIConfig.getPathUrl(sectionNumber));
 
@@ -154,18 +155,16 @@ public class InitData {
                     .subscribe(new Observer<RestBean>() {
                         @Override
                         public void onSubscribe(Disposable d) {
-                            Log.i("---initData2---", "onSubscribe: ");
                         }
 
                         @Override
                         public void onNext(RestBean restBean) {
-                            Log.i("---initData2---", "onNext: restBean = " + restBean);
 
                             if (restBean != null) {
 
-                                if (SQLTableString.restTableName[sectionNumber].equals("Pictures")) {
+                                if (sectionNumber == 0) {
                                     //SQLite数据表格
-                                    MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
+                                    MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, SQLTableString.tableStore, null, 1);
                                     SQLiteDatabase db = dbHelper.getWritableDatabase();
                                     ContentValues values = new ContentValues();
                                     //先清空表中数据，
@@ -176,14 +175,14 @@ public class InitData {
 
                                     //再存进新的数据
                                     for (int i = 0; i < restBean.getResults().size(); i++) {
-                                        values.put("_id", restBean.getResults().get(i).get_id());
-                                        values.put("createdAt", restBean.getResults().get(i).getCreatedAt());
-                                        values.put("desc", restBean.getResults().get(i).getDesc());
-                                        values.put("publishedAt", restBean.getResults().get(i).getPublishedAt());
-                                        values.put("source", restBean.getResults().get(i).getSource());
-                                        values.put("type", restBean.getResults().get(i).getType());
-                                        values.put("url", restBean.getResults().get(i).getUrl());
-                                        values.put("who", restBean.getResults().get(i).getWho());
+                                        values.put(SQLTableString.picTableAttributes[1], restBean.getResults().get(i).get_id());
+                                        values.put(SQLTableString.picTableAttributes[2], restBean.getResults().get(i).getCreatedAt());
+                                        values.put(SQLTableString.picTableAttributes[3], restBean.getResults().get(i).getDesc());
+                                        values.put(SQLTableString.picTableAttributes[4], restBean.getResults().get(i).getPublishedAt());
+                                        values.put(SQLTableString.picTableAttributes[5], restBean.getResults().get(i).getSource());
+                                        values.put(SQLTableString.picTableAttributes[6], restBean.getResults().get(i).getType());
+                                        values.put(SQLTableString.picTableAttributes[7], restBean.getResults().get(i).getUrl());
+                                        values.put(SQLTableString.picTableAttributes[8], restBean.getResults().get(i).getWho());
 
                                         db.insert(SQLTableString.restTableName[sectionNumber], null, values);
                                         values.clear();
@@ -192,19 +191,19 @@ public class InitData {
                                     db.close();
                                 } else {
                                     //SQLite数据表格
-                                    MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
+                                    MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, SQLTableString.tableStore, null, 1);
                                     SQLiteDatabase db = dbHelper.getWritableDatabase();
                                     ContentValues values = new ContentValues();
                                     //先清空表中数据，
-                                    db.delete("VideoUrl", null, null);
+                                    db.delete(SQLTableString.transferTable, null, null);
                                     //让id重新从1开始
-                                    String string = "update sqlite_sequence set seq=0 where name='" + "VideoUrl" + "'";
+                                    String string = "update sqlite_sequence set seq=0 where name='" + SQLTableString.transferTable + "'";
                                     db.execSQL(string);
 
                                     //再存进新的数据
                                     for (int i = 0; i < restBean.getResults().size(); i++) {
-                                        values.put("url", restBean.getResults().get(i).getUrl());
-                                        db.insert("VideoUrl", null, values);
+                                        values.put(SQLTableString.transferAttributes[1], restBean.getResults().get(i).getUrl());
+                                        db.insert(SQLTableString.transferTable, null, values);
                                         values.clear();
                                     }
                                     dbHelper.close();
@@ -215,17 +214,15 @@ public class InitData {
 
                         @Override
                         public void onError(Throwable e) {
-                            Log.i("---initData2---", "onError: ");
                         }
 
                         @Override
                         public void onComplete() {
-                            Log.i("---initData2---", "onComplete: ");
                         }
                     });
         }
 
-        //EventBus 发送消息
+        //EventBus 发送消息告诉fragment数据已经储存完成。
         EventBus.getDefault().post(new MessageEvent(navigationItemNumber, sectionNumber));
     }
 

@@ -53,7 +53,6 @@ public class GankAdapter extends RecyclerView.Adapter {
                 null, "id = ?", new String[]{String.valueOf(position + 1)},
                 null, null, null, null);
 
-        Log.i("GankAdapter", "onBindViewHolder: --cursor.moveToFirst()=" + cursor.moveToFirst());
         if (cursor.moveToFirst()) {
             Glide.with(context)//使用Glide显示图片
                     .load(cursor.getString(cursor.getColumnIndex("image")))
@@ -89,15 +88,11 @@ public class GankAdapter extends RecyclerView.Adapter {
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView desc;
         private ImageView imageView0;
-//        private ImageView imageView1;
-//        private ImageView imageView2;
 
         public ViewHolder(View itemView) {
             super(itemView);
             desc = itemView.findViewById(R.id.tv_item_desc);
             imageView0 = itemView.findViewById(R.id.iv_item_imgsrc0);
-//            imageView1 = itemView.findViewById(R.id.iv_item_imgsrc1);
-//            imageView2 = itemView.findViewById(R.id.iv_item_imgsrc2);
         }
     }
 

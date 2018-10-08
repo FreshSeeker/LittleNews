@@ -53,22 +53,19 @@ public class GankFragment extends Fragment implements MyItemClickListener {
 
         assert getArguments() != null;
         sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
-        final View rootView = inflater.inflate(R.layout.content_main, container, false);
-        swipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh);
-        recyclerView = rootView.findViewById(R.id.recycler_view);
-
-        initRecyclerView();
-
-        return rootView;
+        return inflater.inflate(R.layout.content_main, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (INIT_STATE == 1) {
+            //从网络获取内容
             InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
             INIT_STATE = INIT_STATE + 1;
         }
-
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        recyclerView = view.findViewById(R.id.recycler_view);
+        initRecyclerView();
     }
 
     @Override
@@ -93,8 +90,10 @@ public class GankFragment extends Fragment implements MyItemClickListener {
         int secNumber = messageEvent.getsecNumber();
         int navNumber = messageEvent.getnavNumber();
         if (navigationItemNumber == navNumber && secNumber == sectionNumber) {
-            gankAdapter.notifyDataSetChanged();
             swipeRefreshLayout.setRefreshing(false);
+            if (gankAdapter != null){
+                gankAdapter.notifyDataSetChanged();
+            }
         }
     }
 

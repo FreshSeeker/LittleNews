@@ -28,8 +28,6 @@ import org.greenrobot.eventbus.ThreadMode;
 public class NewsFragment extends Fragment implements MyItemClickListener {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private int INIT_STATE = 1;
-    private final String TAG = "NewsFragment";
     private int sectionNumber;
     private final int navigationItemNumber = 0;
 
@@ -54,22 +52,18 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
                              @Nullable Bundle savedInstanceState) {
         assert getArguments() != null;
         sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
-        final View rootView = inflater.inflate(R.layout.content_main, container, false);
-        swipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh);
-        recyclerView = rootView.findViewById(R.id.recycler_view);
-
-        initRecyclerView();
-
-        return rootView;
+        return inflater.inflate(R.layout.content_main, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (INIT_STATE == 1) {
-            //初始化数据
-            InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
-            INIT_STATE = INIT_STATE + 1;
-        }
+        super.onViewCreated(view, savedInstanceState);
+
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        recyclerView = view.findViewById(R.id.recycler_view);
+        newsAdapter = new NewsAdapter(getActivity(), sectionNumber);
+        newsAdapter.setOnItemClickListener(this);
+        initRecyclerView();
     }
 
     @Override
@@ -93,8 +87,10 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         int secNumber = messageEvent.getsecNumber();
         int navNumber = messageEvent.getnavNumber();
         if (navigationItemNumber == navNumber && secNumber == sectionNumber) {
-            newsAdapter.notifyDataSetChanged();
             swipeRefreshLayout.setRefreshing(false);
+            if (newsAdapter != null){
+                newsAdapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -104,10 +100,7 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         //布局管理器，使用线性布局
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        //绑定适配器
-        newsAdapter = new NewsAdapter(getActivity(), sectionNumber);
-        newsAdapter.setOnItemClickListener(this);
-        recyclerView.setAdapter(newsAdapter);
+
         //分割线
         recyclerView.addItemDecoration(new MyDecoration());
         //动画效果
@@ -129,6 +122,8 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
             }
         });
 
+        //绑定适配器
+        recyclerView.setAdapter(newsAdapter);
     }
 
     class MyDecoration extends RecyclerView.ItemDecoration {

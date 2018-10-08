@@ -57,12 +57,7 @@ public class RestFragment extends Fragment implements MyItemClickListener {
                              @Nullable Bundle savedInstanceState) {
         assert getArguments() != null;
         sectionNumber = getArguments().getInt(ARG_SECTION_NUMBER) - 1;
-        final View rootView = inflater.inflate(R.layout.content_main, container, false);
-        swipeRefreshLayout = rootView.findViewById(R.id.swipe_refresh);
-        recyclerView = rootView.findViewById(R.id.recycler_view);
-
-        initRecyclerView();
-        return rootView;
+        return inflater.inflate(R.layout.content_main, container, false);
     }
 
     @Override
@@ -72,7 +67,9 @@ public class RestFragment extends Fragment implements MyItemClickListener {
             InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
             INIT_STATE = INIT_STATE + 1;
         }
-
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
+        recyclerView = view.findViewById(R.id.recycler_view);
+        initRecyclerView();
     }
 
     @Override
@@ -104,18 +101,21 @@ public class RestFragment extends Fragment implements MyItemClickListener {
         int navNumber = messageEvent.getnavNumber();
         if (navigationItemNumber == navNumber && secNumber == sectionNumber) {
             if (secNumber == 0) {
-                restAdapter.notifyDataSetChanged();
                 swipeRefreshLayout.setRefreshing(false);
+                if (restAdapter != null) {
+                    restAdapter.notifyDataSetChanged();
+                }
             }
-
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void serviceEvent(ServiceEvent serviceEvent) {
         if (serviceEvent.getUrlLoaded()) {
-            restAdapter.notifyDataSetChanged();
             swipeRefreshLayout.setRefreshing(false);
+            if (restAdapter != null) {
+                restAdapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -133,7 +133,6 @@ public class RestFragment extends Fragment implements MyItemClickListener {
             LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
         }
-
 
         //绑定适配器
         restAdapter = new RestAdapter(getActivity(), sectionNumber);
@@ -159,7 +158,6 @@ public class RestFragment extends Fragment implements MyItemClickListener {
                 InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
             }
         });
-
     }
 
     @Override

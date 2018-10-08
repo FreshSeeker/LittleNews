@@ -32,7 +32,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
         this.sectionNumber = sectionNumber;
         this.inflater = LayoutInflater.from(context);
         options = new RequestOptions().placeholder(R.drawable.ic_loading).error(R.drawable.ic_null);
-        MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, "TableStore.db", null, 1);
+        MyDataBaseHelper dbHelper = new MyDataBaseHelper(context, SQLTableString.tableStore, null, 1);
         db = dbHelper.getWritableDatabase();
 
     }
@@ -53,7 +53,6 @@ public class NewsAdapter extends RecyclerView.Adapter {
                 null, "id = ?", new String[]{String.valueOf(position + 1)},
                 null, null, null, null);
 
-        Log.i("NewsAdapter", "onBindViewHolder: --cursor.moveToFirst()=" + cursor.moveToFirst());
         if (cursor.moveToFirst()) {
             Glide.with(context)//使用Glide显示图片
                     .load(cursor.getString(cursor.getColumnIndex("picUrl")))

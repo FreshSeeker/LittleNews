@@ -65,4 +65,7 @@ public class APIConfig {
         }
     }
 
+
+    public static String transferBaseUrl = "https://api.lylares.com/video/douying/";
+    public static String transferPathUrl = "?AppKey=8n4HdUBXVe&url=";
 }
