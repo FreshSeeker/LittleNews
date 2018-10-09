@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.freshseeker.android.littlenews.bean.GankBean;
 import com.freshseeker.android.littlenews.bean.NewsBean;
@@ -36,7 +35,7 @@ public class InitData {
      */
 
     @SuppressLint("CheckResult")
-    public static void initData(final Context context, int navigationItemNumber, final int sectionNumber) {
+    public static void initData(final Context context, final int navigationItemNumber, final int sectionNumber) {
 
         //RxJava2 + Retrofit2 作网络请求
         Retrofit retrofit = new Retrofit.Builder()
@@ -69,9 +68,6 @@ public class InitData {
                                 String string = "update sqlite_sequence set seq=0 where name='" + SQLTableString.newsTableName[sectionNumber] + "'";
                                 db.execSQL(string);
                                 //再存进新的数据
-                                Log.i("---", "onNext: " + newsBean);
-                                Log.i("---", "onNext: " + newsBean.getNewslist());
-                                Log.i("---", "onNext: " + newsBean.getNewslist().size());
                                 for (int i = 0; i < newsBean.getNewslist().size(); i++) {
                                     values.put(SQLTableString.newsTableAttributes[1], newsBean.getNewslist().get(i).getCtime());
                                     values.put(SQLTableString.newsTableAttributes[2], newsBean.getNewslist().get(i).getTitle());
@@ -92,6 +88,8 @@ public class InitData {
 
                         @Override
                         public void onComplete() {
+                            //EventBus 发送消息告诉fragment数据已经储存完成。
+                            EventBus.getDefault().post(new MessageEvent(navigationItemNumber, sectionNumber));
                         }
                     });
 
@@ -144,6 +142,8 @@ public class InitData {
 
                         @Override
                         public void onComplete() {
+                            //EventBus 发送消息告诉fragment数据已经储存完成。
+                            EventBus.getDefault().post(new MessageEvent(navigationItemNumber, sectionNumber));
                         }
                     });
         } else if (navigationItemNumber == 2) {//休息频道的网络请求
@@ -218,12 +218,12 @@ public class InitData {
 
                         @Override
                         public void onComplete() {
+                            //EventBus 发送消息告诉fragment数据已经储存完成。
+                            EventBus.getDefault().post(new MessageEvent(navigationItemNumber, sectionNumber));
                         }
                     });
         }
 
-        //EventBus 发送消息告诉fragment数据已经储存完成。
-        EventBus.getDefault().post(new MessageEvent(navigationItemNumber, sectionNumber));
     }
 
 }

@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,8 @@ public class GankFragment extends Fragment implements MyItemClickListener {
         initRecyclerView();
     }
 
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,8 +93,10 @@ public class GankFragment extends Fragment implements MyItemClickListener {
         int secNumber = messageEvent.getsecNumber();
         int navNumber = messageEvent.getnavNumber();
         if (navigationItemNumber == navNumber && secNumber == sectionNumber) {
-            swipeRefreshLayout.setRefreshing(false);
-            if (gankAdapter != null){
+            if (swipeRefreshLayout != null) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+            if (gankAdapter != null) {
                 gankAdapter.notifyDataSetChanged();
             }
         }

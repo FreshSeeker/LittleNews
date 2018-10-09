@@ -26,8 +26,6 @@
         </activity>
         <activity android:name=".activity.NewsDetailsActivity"/>
 
-        <service android:name=".module.MyIntentService" />
-
         <activity android:name=".activity.AboutActivity"
             android:label="@string/about"/>
     </application>

@@ -101,7 +101,9 @@ public class RestFragment extends Fragment implements MyItemClickListener {
         int navNumber = messageEvent.getnavNumber();
         if (navigationItemNumber == navNumber && secNumber == sectionNumber) {
             if (secNumber == 0) {
-                swipeRefreshLayout.setRefreshing(false);
+                if (swipeRefreshLayout != null) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
                 if (restAdapter != null) {
                     restAdapter.notifyDataSetChanged();
                 }
@@ -112,7 +114,9 @@ public class RestFragment extends Fragment implements MyItemClickListener {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void serviceEvent(ServiceEvent serviceEvent) {
         if (serviceEvent.getUrlLoaded()) {
-            swipeRefreshLayout.setRefreshing(false);
+            if (swipeRefreshLayout != null) {
+                swipeRefreshLayout.setRefreshing(false);
+            }
             if (restAdapter != null) {
                 restAdapter.notifyDataSetChanged();
             }

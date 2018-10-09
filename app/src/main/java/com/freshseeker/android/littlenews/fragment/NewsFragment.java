@@ -87,7 +87,9 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
         int secNumber = messageEvent.getsecNumber();
         int navNumber = messageEvent.getnavNumber();
         if (navigationItemNumber == navNumber && secNumber == sectionNumber) {
-            swipeRefreshLayout.setRefreshing(false);
+            if (swipeRefreshLayout !=null){
+                swipeRefreshLayout.setRefreshing(false);
+            }
             if (newsAdapter != null){
                 newsAdapter.notifyDataSetChanged();
             }

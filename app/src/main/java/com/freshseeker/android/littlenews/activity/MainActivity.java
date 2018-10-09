@@ -19,13 +19,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.freshseeker.android.littlenews.R;
+import com.freshseeker.android.littlenews.config.FilePathConfig;
+import com.freshseeker.android.littlenews.event.MessageEvent;
 import com.freshseeker.android.littlenews.fragment.AFragment;
 import com.freshseeker.android.littlenews.fragment.BFragment;
 import com.freshseeker.android.littlenews.fragment.CFragment;
-import com.freshseeker.android.littlenews.config.FilePathConfig;
-import com.freshseeker.android.littlenews.event.MessageEvent;
-import com.freshseeker.android.littlenews.module.MyIntentService;
-import com.freshseeker.android.littlenews.R;
+import com.freshseeker.android.littlenews.module.VideoData;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
         int secNumber = messageEvent.getsecNumber();
         int navNumber = messageEvent.getnavNumber();
         if (2 == navNumber && secNumber == 1) {
-            startService(new Intent(this, MyIntentService.class));
+            VideoData.loadData(this);
         }
     }
 
