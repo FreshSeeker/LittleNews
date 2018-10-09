@@ -21,7 +21,7 @@
 <br>使用JiaoZiVideoPlayer做视频播放
 <br>使用RecyclerView显示实现下拉刷新、上拉加载
 <br>使用WebView做阅览页
-<br>使用EventBus方便组件之间进行通信，异步处理
+<br>使用EventBus方便组件之间进行通信
 <br>使用SQLite进行数据储存和增删改查
 ## APK下载
 https://github.com/FreshSeeker/LittleNews/blob/master/app/release/app-release.apk
