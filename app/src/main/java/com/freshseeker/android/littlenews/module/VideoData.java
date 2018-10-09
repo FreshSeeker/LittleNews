@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.freshseeker.android.littlenews.bean.TransformBean;
 import com.freshseeker.android.littlenews.config.APIConfig;
@@ -72,7 +71,6 @@ public class VideoData {
                                     values.put(SQLTableString.videoTableAttributes[4], transformBean.getVinfo().getTitle());
                                     values.put(SQLTableString.videoTableAttributes[5], transformBean.getUserinfo().getAvatar());
                                     values.put(SQLTableString.videoTableAttributes[6], transformBean.getUserinfo().getNickname());
-                                    Log.i("---", "onNext: " );
                                     db.insert(SQLTableString.restTableName[1], null, values);
                                     values.clear();
                                 }
@@ -87,7 +85,6 @@ public class VideoData {
                             public void onComplete() {
                                 count[0] = count[0] +1;
                                 if (count[0] == 20){
-                                    Log.i("---", "onComplete: " + count[0]);
                                     //EventBus 发送消息
                                     EventBus.getDefault().post(new ServiceEvent(true));
                                 }

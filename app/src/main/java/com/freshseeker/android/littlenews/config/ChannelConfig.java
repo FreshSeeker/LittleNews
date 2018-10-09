@@ -10,11 +10,11 @@ public class ChannelConfig {
             "社会",
             "国内",
             "国际",
+            "VR科技",
+            "移动互联",
             "娱乐",
             "体育",
-            "NBA",
-            "足球",
-            "科技",
+            "足球"
     };
 
     private final static Map<String,String> channelMap = new HashMap<String,String>(){
@@ -22,11 +22,11 @@ public class ChannelConfig {
             put(channels[0],"social");
             put(channels[1],"guonei");
             put(channels[2],"world");
-            put(channels[3],"huabian");
-            put(channels[4],"tiyu");
-            put(channels[5],"nba");
-            put(channels[6],"football");
-            put(channels[7],"keji");
+            put(channels[3],"vr");
+            put(channels[4],"mobile");
+            put(channels[5],"huabian");
+            put(channels[6],"tiyu");
+            put(channels[7],"football");
         }
     };
 
