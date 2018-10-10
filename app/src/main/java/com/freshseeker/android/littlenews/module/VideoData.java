@@ -11,7 +11,6 @@ import com.freshseeker.android.littlenews.config.GetRequest_Interface;
 import com.freshseeker.android.littlenews.config.MyDataBaseHelper;
 import com.freshseeker.android.littlenews.config.SQLTableString;
 import com.freshseeker.android.littlenews.event.ServiceEvent;
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -20,6 +19,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class VideoData {
