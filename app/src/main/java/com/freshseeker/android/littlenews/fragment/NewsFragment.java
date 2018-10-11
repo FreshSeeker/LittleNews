@@ -28,6 +28,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class NewsFragment extends Fragment implements MyItemClickListener {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private Boolean INIT_STATE = true;
     private int sectionNumber;
     private final int navigationItemNumber = 0;
 
@@ -58,7 +59,11 @@ public class NewsFragment extends Fragment implements MyItemClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        if (INIT_STATE) {
+            //从网络获取内容
+            InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
+            INIT_STATE = false;
+        }
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
         recyclerView = view.findViewById(R.id.recycler_view);
         newsAdapter = new NewsAdapter(getActivity(), sectionNumber);

@@ -32,7 +32,7 @@ import cn.jzvd.Jzvd;
 public class RestFragment extends Fragment implements MyItemClickListener {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private int INIT_STATE = 1;
+    private Boolean INIT_STATE = true;
     private int sectionNumber;
     private final int navigationItemNumber = 2;
 
@@ -62,10 +62,11 @@ public class RestFragment extends Fragment implements MyItemClickListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (INIT_STATE == 1) {
+        super.onViewCreated(view, savedInstanceState);
+        if (INIT_STATE) {
             //从网络获取内容
             InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
-            INIT_STATE = INIT_STATE + 1;
+            INIT_STATE = false;
         }
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
         recyclerView = view.findViewById(R.id.recycler_view);

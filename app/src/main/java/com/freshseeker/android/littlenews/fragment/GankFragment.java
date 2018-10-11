@@ -10,7 +10,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +28,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class GankFragment extends Fragment implements MyItemClickListener {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private int INIT_STATE = 1;
+    private Boolean INIT_STATE = true;
     private int sectionNumber;
     private final int navigationItemNumber = 1;
 
@@ -59,16 +58,16 @@ public class GankFragment extends Fragment implements MyItemClickListener {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (INIT_STATE == 1) {
+        super.onViewCreated(view, savedInstanceState);
+        if (INIT_STATE) {
             //从网络获取内容
             InitData.initData(getActivity(), navigationItemNumber, sectionNumber);
-            INIT_STATE = INIT_STATE + 1;
+            INIT_STATE = false;
         }
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh);
         recyclerView = view.findViewById(R.id.recycler_view);
         initRecyclerView();
     }
-
 
 
     @Override

@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity
     private CFragment cFragment;
     private Toolbar toolbar;
 
-    public static int navigationItemNumber = 0;
+    public  int navigationItemNumber = 0;
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)

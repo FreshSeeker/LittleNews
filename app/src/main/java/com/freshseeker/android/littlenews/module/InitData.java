@@ -29,9 +29,9 @@ public class InitData {
     /**
      * 访问网络，将得到的数据保存到SQLite。
      *
-     * @param context 上下文
+     * @param context              上下文
      * @param navigationItemNumber navigation序号
-     * @param sectionNumber Tab的位置
+     * @param sectionNumber        Tab的位置
      */
 
     @SuppressLint("CheckResult")
@@ -39,14 +39,14 @@ public class InitData {
 
         //RxJava2 + Retrofit2 作网络请求
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(APIConfig.getBaseUrl())
+                .baseUrl(APIConfig.getBaseUrl(navigationItemNumber))
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         GetRequest_Interface request_interface = retrofit.create(GetRequest_Interface.class);
 
         if (navigationItemNumber == 0) {//新闻API的网络请求，得到 NewsBean对象
-            Observable<NewsBean> observable = request_interface.getNews(APIConfig.getPathUrl(sectionNumber));
+            Observable<NewsBean> observable = request_interface.getNews(APIConfig.getPathUrl(navigationItemNumber, sectionNumber));
 
             observable.subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
@@ -94,7 +94,7 @@ public class InitData {
                     });
 
         } else if (navigationItemNumber == 1) {//干货集中营的网络请求
-            Observable<GankBean> observable = request_interface.getGank(APIConfig.getPathUrl(sectionNumber));
+            Observable<GankBean> observable = request_interface.getGank(APIConfig.getPathUrl(navigationItemNumber, sectionNumber));
 
             observable.subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())
@@ -148,7 +148,7 @@ public class InitData {
                     });
         } else if (navigationItemNumber == 2) {//休息频道的网络请求
 
-            Observable<RestBean> observable = request_interface.getRest(APIConfig.getPathUrl(sectionNumber));
+            Observable<RestBean> observable = request_interface.getRest(APIConfig.getPathUrl(navigationItemNumber, sectionNumber));
 
             observable.subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.io())

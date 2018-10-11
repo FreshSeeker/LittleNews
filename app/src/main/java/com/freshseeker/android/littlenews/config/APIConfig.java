@@ -1,7 +1,5 @@
 package com.freshseeker.android.littlenews.config;
 
-import com.freshseeker.android.littlenews.activity.MainActivity;
-
 public class APIConfig {
     //新闻API
     private static final String newsBaseUrl = "http://api.tianapi.com/";
@@ -42,22 +40,22 @@ public class APIConfig {
     }
 
     //统一获取baseUrl的方法
-    public static String getBaseUrl(){
-        if (MainActivity.navigationItemNumber ==0){
+    public static String getBaseUrl(int navigationItemNumber){
+        if (navigationItemNumber ==0){
             return newsBaseUrl;
-        }else if (MainActivity.navigationItemNumber ==1){
+        }else if (navigationItemNumber ==1){
             return gankBaseUrl;
         }else {
             return restBaseUrl;
         }
     }
     //统一获取pathUrl的方法
-    public static String getPathUrl( int sectionNumber){
+    public static String getPathUrl(int navigationItemNumber, int sectionNumber){
 
-        if (MainActivity.navigationItemNumber ==0){
+        if (navigationItemNumber ==0){
             return getNewsUrl(sectionNumber);
 
-        }else if (MainActivity.navigationItemNumber ==1){
+        }else if (navigationItemNumber ==1){
             return getGankUrl(sectionNumber);
 
         }else {
