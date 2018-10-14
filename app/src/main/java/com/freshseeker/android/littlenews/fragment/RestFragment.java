@@ -167,7 +167,7 @@ public class RestFragment extends Fragment implements MyItemClickListener {
 
     @Override
     public void onItemClick(String url) {
-        PictureDialog pictureDialog = new PictureDialog(getActivity(), url);
+        PictureDialog pictureDialog = new PictureDialog(getActivity(), R.style.PicDialog, url);
         pictureDialog.show();
     }
 

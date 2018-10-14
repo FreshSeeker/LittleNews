@@ -11,6 +11,7 @@
         android:background="@color/save_back"
         android:padding="5dp"
         android:gravity="center"
-        android:text="保存到手机"
-        android:textSize="20sp"/>
+        android:text="@string/save_to_phone"
+        android:textSize="20sp"
+        android:textColor="@color/DialogTextColor"/>
 </LinearLayout>

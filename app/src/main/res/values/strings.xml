@@ -25,4 +25,5 @@
     <string name="developer">developer:</string>
     <string name="dvlper_name">周康</string>
     <string name="github">GitHub:</string>
+    <string name="save_to_phone">保存到手机</string>
 </resources>

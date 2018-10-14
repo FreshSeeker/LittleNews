@@ -18,8 +18,8 @@ public class SavePicDialog extends Dialog {
     private TextView textSave;
     private String url;
 
-    public SavePicDialog(@NonNull Context context,String url) {
-        super(context);
+    public SavePicDialog(@NonNull Context context, int themeResId, String url) {
+        super(context, themeResId);
         this.url = url;
     }
 
@@ -34,7 +34,7 @@ public class SavePicDialog extends Dialog {
         WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
         Point size = new Point();
         display.getSize(size);
-        layoutParams.width = (int) (size.x*0.8);
+        layoutParams.width = (int) (size.x * 0.8);
         getWindow().setAttributes(layoutParams);
 
         textSave = findViewById(R.id.tv_save);

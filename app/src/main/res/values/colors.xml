@@ -6,11 +6,13 @@
     <color name="tab_selected">#009688</color>
     <color name="tab_Selected_Text_Color">#009688</color>
     <color name="tabTextColor">#000000</color>
+    <color name="DialogTextColor">#000000</color>
     <color name="itemDecoration">#F8F8FF</color>
     <color name="item_list">#ffffff</color>
     <color name="cardBack">#ffffff</color>
     <color name="tab_background">#E0EEEE</color>
     <color name="save_back">#cecece</color>
+    <color name="white">#ffffff</color>
 </resources>
 
 

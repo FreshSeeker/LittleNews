@@ -37,6 +37,20 @@ public class MyRecyclerView extends RecyclerView {
         }
     }
 
+    /**
+     *
+     *
+     * @return 屏幕是否已经滑到底部
+     *
+     *（1）computeVerticalScrollOffset()：
+     * 已经向下滚动的距离，为0时表示已处于顶部。
+     *
+     * （2）computeVerticalScrollRange()；
+     * 整体的高度，注意是整体，包括在显示区域之外的。
+     *
+     * （3）computeVerticalScrollExtent()；
+     * 显示区域的高度。
+     */
     public boolean isSlideToBottom() {
         return (this != null
                 && this.computeVerticalScrollExtent() + this.computeVerticalScrollOffset()

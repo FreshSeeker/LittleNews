@@ -2,11 +2,11 @@ package com.freshseeker.android.littlenews.base;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
@@ -19,13 +19,9 @@ public class PictureDialog extends Dialog {
     private ImageView largeImageView;
     private String url;
 
-    public PictureDialog(@NonNull Context context, String url) {
-        super(context);
-        this.url = url;
-    }
-
-    public PictureDialog(@NonNull Context context, int themeResId) {
+    public PictureDialog(@NonNull Context context, int themeResId, String url) {
         super(context, themeResId);
+        this.url = url;
     }
 
     @Override
@@ -33,16 +29,6 @@ public class PictureDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_picture_entry);
         largeImageView = findViewById(R.id.iv_large_image);
-
-        //设置宽高
-        WindowManager windowManager = getWindow().getWindowManager();
-        Display display = windowManager.getDefaultDisplay();
-        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-        Point size = new Point();
-        display.getSize(size);
-        layoutParams.width = size.x;
-        layoutParams.height = size.y;
-        getWindow().setAttributes(layoutParams);
 
         RequestOptions options = new RequestOptions().placeholder(R.drawable.ic_loading).error(R.drawable.ic_null);
         Glide.with(getContext())
@@ -60,9 +46,23 @@ public class PictureDialog extends Dialog {
         largeImageView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                new SavePicDialog(getContext(), url).show();
+                new SavePicDialog(getContext(), R.style.SavePicDialog, url).show();
                 return true;
             }
         });
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        //设置宽高
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.gravity = Gravity.BOTTOM;
+        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+
+        getWindow().getDecorView().setPadding(0, 0, 0, 0);
+
+        getWindow().setAttributes(layoutParams);
     }
 }
