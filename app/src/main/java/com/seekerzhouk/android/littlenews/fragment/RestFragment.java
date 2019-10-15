@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.fragment;
+package com.seekerzhouk.android.littlenews.fragment;
 
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -14,14 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.freshseeker.android.littlenews.R;
-import com.freshseeker.android.littlenews.adapter.RestAdapter;
-import com.freshseeker.android.littlenews.base.MyRecyclerView;
-import com.freshseeker.android.littlenews.base.PictureDialog;
-import com.freshseeker.android.littlenews.config.SQLTableString;
-import com.freshseeker.android.littlenews.event.MessageEvent;
-import com.freshseeker.android.littlenews.event.ServiceEvent;
-import com.freshseeker.android.littlenews.module.InitData;
+import com.seekerzhouk.android.littlenews.R;
+import com.seekerzhouk.android.littlenews.adapter.RestAdapter;
+import com.seekerzhouk.android.littlenews.base.MyRecyclerView;
+import com.seekerzhouk.android.littlenews.base.PictureDialog;
+import com.seekerzhouk.android.littlenews.config.SQLTableString;
+import com.seekerzhouk.android.littlenews.event.MessageEvent;
+import com.seekerzhouk.android.littlenews.event.ServiceEvent;
+import com.seekerzhouk.android.littlenews.module.InitData;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

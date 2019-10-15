@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.config;
+package com.seekerzhouk.android.littlenews.config;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

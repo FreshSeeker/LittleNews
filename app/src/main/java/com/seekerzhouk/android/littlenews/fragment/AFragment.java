@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.fragment;
+package com.seekerzhouk.android.littlenews.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.freshseeker.android.littlenews.adapter.NewsPagerAdapter;
-import com.freshseeker.android.littlenews.R;
+import com.seekerzhouk.android.littlenews.adapter.NewsPagerAdapter;
+import com.seekerzhouk.android.littlenews.R;
 
 public class AFragment extends Fragment {
 

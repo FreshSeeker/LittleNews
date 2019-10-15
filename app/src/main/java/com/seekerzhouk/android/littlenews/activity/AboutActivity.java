@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.activity;
+package com.seekerzhouk.android.littlenews.activity;
 
 import android.content.Intent;
 import android.graphics.Paint;
@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.freshseeker.android.littlenews.R;
-import com.freshseeker.android.littlenews.utils.PackageInfoUtil;
+import com.seekerzhouk.android.littlenews.R;
+import com.seekerzhouk.android.littlenews.utils.PackageInfoUtil;
 
 public class AboutActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.base;
+package com.seekerzhouk.android.littlenews.base;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

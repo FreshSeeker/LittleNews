@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.config;
+package com.seekerzhouk.android.littlenews.config;
 
 import java.util.HashMap;
 import java.util.Map;

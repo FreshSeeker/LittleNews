@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.activity;
+package com.seekerzhouk.android.littlenews.activity;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,13 +19,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.freshseeker.android.littlenews.R;
-import com.freshseeker.android.littlenews.config.FilePathConfig;
-import com.freshseeker.android.littlenews.event.MessageEvent;
-import com.freshseeker.android.littlenews.fragment.AFragment;
-import com.freshseeker.android.littlenews.fragment.BFragment;
-import com.freshseeker.android.littlenews.fragment.CFragment;
-import com.freshseeker.android.littlenews.module.VideoData;
+import com.seekerzhouk.android.littlenews.R;
+import com.seekerzhouk.android.littlenews.config.FilePathConfig;
+import com.seekerzhouk.android.littlenews.event.MessageEvent;
+import com.seekerzhouk.android.littlenews.fragment.AFragment;
+import com.seekerzhouk.android.littlenews.fragment.BFragment;
+import com.seekerzhouk.android.littlenews.fragment.CFragment;
+import com.seekerzhouk.android.littlenews.module.VideoData;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

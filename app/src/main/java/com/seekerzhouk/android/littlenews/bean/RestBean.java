@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.bean;
+package com.seekerzhouk.android.littlenews.bean;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.module;
+package com.seekerzhouk.android.littlenews.module;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.util.Log;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
-import com.freshseeker.android.littlenews.config.FilePathConfig;
-import com.freshseeker.android.littlenews.utils.FileUtil;
+import com.seekerzhouk.android.littlenews.config.FilePathConfig;
+import com.seekerzhouk.android.littlenews.utils.FileUtil;
 
 import java.io.File;
 import java.io.IOException;

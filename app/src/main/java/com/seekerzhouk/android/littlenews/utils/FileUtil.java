@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.utils;
+package com.seekerzhouk.android.littlenews.utils;
 
 import android.content.Context;
 import android.content.Intent;

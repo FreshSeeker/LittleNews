@@ -1,18 +1,18 @@
-package com.freshseeker.android.littlenews.module;
+package com.seekerzhouk.android.littlenews.module;
 
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.freshseeker.android.littlenews.bean.GankBean;
-import com.freshseeker.android.littlenews.bean.NewsBean;
-import com.freshseeker.android.littlenews.bean.RestBean;
-import com.freshseeker.android.littlenews.config.APIConfig;
-import com.freshseeker.android.littlenews.config.GetRequest_Interface;
-import com.freshseeker.android.littlenews.config.MyDataBaseHelper;
-import com.freshseeker.android.littlenews.config.SQLTableString;
-import com.freshseeker.android.littlenews.event.MessageEvent;
+import com.seekerzhouk.android.littlenews.bean.GankBean;
+import com.seekerzhouk.android.littlenews.bean.NewsBean;
+import com.seekerzhouk.android.littlenews.bean.RestBean;
+import com.seekerzhouk.android.littlenews.config.APIConfig;
+import com.seekerzhouk.android.littlenews.config.GetRequest_Interface;
+import com.seekerzhouk.android.littlenews.config.MyDataBaseHelper;
+import com.seekerzhouk.android.littlenews.config.SQLTableString;
+import com.seekerzhouk.android.littlenews.event.MessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

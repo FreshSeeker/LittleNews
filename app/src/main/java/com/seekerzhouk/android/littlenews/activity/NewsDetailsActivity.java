@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.activity;
+package com.seekerzhouk.android.littlenews.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -16,7 +16,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.freshseeker.android.littlenews.R;
+import com.seekerzhouk.android.littlenews.R;
 
 public class NewsDetailsActivity extends AppCompatActivity {
 

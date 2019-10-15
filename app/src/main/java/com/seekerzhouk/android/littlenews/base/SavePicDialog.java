@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.base;
+package com.seekerzhouk.android.littlenews.base;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.freshseeker.android.littlenews.R;
-import com.freshseeker.android.littlenews.module.GetImageCacheAsyncTask;
+import com.seekerzhouk.android.littlenews.R;
+import com.seekerzhouk.android.littlenews.module.GetImageCacheAsyncTask;
 
 public class SavePicDialog extends Dialog {
 

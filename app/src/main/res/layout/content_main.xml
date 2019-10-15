@@ -8,13 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.freshseeker.android.littlenews.base.MyRecyclerView
+        <com.seekerzhouk.android.littlenews.base.MyRecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/itemDecoration">
 
-        </com.freshseeker.android.littlenews.base.MyRecyclerView>
+        </com.seekerzhouk.android.littlenews.base.MyRecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

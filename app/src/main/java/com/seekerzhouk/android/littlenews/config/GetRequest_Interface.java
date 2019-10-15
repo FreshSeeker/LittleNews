@@ -1,10 +1,10 @@
-package com.freshseeker.android.littlenews.config;
+package com.seekerzhouk.android.littlenews.config;
 
 
-import com.freshseeker.android.littlenews.bean.GankBean;
-import com.freshseeker.android.littlenews.bean.NewsBean;
-import com.freshseeker.android.littlenews.bean.RestBean;
-import com.freshseeker.android.littlenews.bean.TransformBean;
+import com.seekerzhouk.android.littlenews.bean.GankBean;
+import com.seekerzhouk.android.littlenews.bean.NewsBean;
+import com.seekerzhouk.android.littlenews.bean.RestBean;
+import com.seekerzhouk.android.littlenews.bean.TransformBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;

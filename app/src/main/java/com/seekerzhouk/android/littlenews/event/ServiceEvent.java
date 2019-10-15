@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.event;
+package com.seekerzhouk.android.littlenews.event;
 
 public class ServiceEvent {
     private Boolean urlLoaded;

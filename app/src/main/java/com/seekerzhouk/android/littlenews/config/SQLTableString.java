@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.config;
+package com.seekerzhouk.android.littlenews.config;
 
 public class SQLTableString {
 

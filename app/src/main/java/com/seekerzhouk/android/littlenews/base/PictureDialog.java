@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.base;
+package com.seekerzhouk.android.littlenews.base;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.freshseeker.android.littlenews.R;
+import com.seekerzhouk.android.littlenews.R;
 
 public class PictureDialog extends Dialog {
 

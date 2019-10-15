@@ -1,4 +1,4 @@
-package com.freshseeker.android.littlenews.adapter;
+package com.seekerzhouk.android.littlenews.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -14,10 +14,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.freshseeker.android.littlenews.config.MyDataBaseHelper;
-import com.freshseeker.android.littlenews.fragment.MyItemClickListener;
-import com.freshseeker.android.littlenews.R;
-import com.freshseeker.android.littlenews.config.SQLTableString;
+import com.seekerzhouk.android.littlenews.config.MyDataBaseHelper;
+import com.seekerzhouk.android.littlenews.fragment.MyItemClickListener;
+import com.seekerzhouk.android.littlenews.R;
+import com.seekerzhouk.android.littlenews.config.SQLTableString;
 
 public class GankAdapter extends RecyclerView.Adapter {
     private Context context;

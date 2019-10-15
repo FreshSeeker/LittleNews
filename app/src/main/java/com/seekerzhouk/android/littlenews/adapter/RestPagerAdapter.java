@@ -1,12 +1,12 @@
-package com.freshseeker.android.littlenews.adapter;
+package com.seekerzhouk.android.littlenews.adapter;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.freshseeker.android.littlenews.fragment.RestFragment;
-import com.freshseeker.android.littlenews.config.ChannelConfig;
+import com.seekerzhouk.android.littlenews.fragment.RestFragment;
+import com.seekerzhouk.android.littlenews.config.ChannelConfig;
 
 public class RestPagerAdapter extends FragmentPagerAdapter {
 
