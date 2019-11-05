@@ -25,7 +25,7 @@
 ![img](https://github.com/FreshSeeker/LittleNews/blob/master/gif/8_clip.gif)
 
 ## APK下载
-https://github.com/FreshSeeker/LittleNews/releases
+https://github.com/seekerzhouk/LittleNews/releases
 ## Thanks
 API来源于天行数据、干货集中营。感谢开放的API。
 <br>还参考了很多大神的类似作品，感谢大家的开源精神。
